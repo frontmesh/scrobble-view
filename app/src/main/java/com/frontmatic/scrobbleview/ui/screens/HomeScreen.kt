@@ -1,4 +1,4 @@
-package com.frontmatic.scrobbleview.screens
+package com.frontmatic.scrobbleview.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.frontmatic.scrobbleview.components.BottomNavBar
+import com.frontmatic.scrobbleview.ui.components.BottomNavBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.frontmatic.scrobbleview.components
+package com.frontmatic.scrobbleview.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
