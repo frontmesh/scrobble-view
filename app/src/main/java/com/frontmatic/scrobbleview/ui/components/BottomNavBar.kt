@@ -41,6 +41,8 @@ fun BottomNavBar() {
                 onClick = { selectedItem = index },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = MaterialTheme.colorScheme.primary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    selectedIconColor = MaterialTheme.colorScheme.background
                 )
             )
         }
