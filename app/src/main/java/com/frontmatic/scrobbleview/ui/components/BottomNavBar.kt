@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class NavMenuItem(val icon: ImageVector, val iconSelected: ImageVector, val title: String)
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(onNavigationItemClick: (Int) -> Unit) {
     var selectedItem by remember { mutableStateOf(0) }
     val items = listOf(
         NavMenuItem(title = "Charts", iconSelected = Icons.Filled.StackedLineChart, icon = Icons.Outlined.StackedLineChart),
@@ -38,7 +38,10 @@ fun BottomNavBar() {
                 icon = { Icon(icon, contentDescription = item.title) },
                 label = { Text(item.title) },
                 selected = selected,
-                onClick = { selectedItem = index },
+                onClick = {
+                    selectedItem = index
+                    onNavigationItemClick(index)
+                },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = MaterialTheme.colorScheme.primary,
                     selectedTextColor = MaterialTheme.colorScheme.primary,
