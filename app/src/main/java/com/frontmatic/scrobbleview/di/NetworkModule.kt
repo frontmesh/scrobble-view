@@ -8,20 +8,17 @@ import com.frontmatic.scrobbleview.data.repository.RemoteDataSource
 import com.frontmatic.scrobbleview.data.repository.RemoteDataSourceImpl
 import com.frontmatic.scrobbleview.util.Constants.BASE_URL
 import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.MediaType.Companion.toMediaType
+import kotlinx.serialization.ExperimentalSerializationApi
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.converter.gson.GsonConverterFactory
 
 @ExperimentalPagingApi
 @ExperimentalSerializationApi
@@ -59,14 +56,6 @@ object NetworkModule {
                 val request = requestBuilder.build()
                 chain.proceed(request)
             }
-
-//            .apply {
-//                addInterceptor(
-//                    HttpLoggingInterceptor().apply {
-//                        level = HttpLoggingInterceptor.Level.BODY
-//                    }
-//                )
-//            }
             .build()
     }
 
@@ -74,7 +63,6 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofitInstance(okHttpClient: OkHttpClient): Retrofit {
-        val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
@@ -83,14 +71,6 @@ object NetworkModule {
                     .disableHtmlEscaping()
                     .create()
             ))
-
-//            .addConverterFactory(Json{ ignoreUnknownKeys = true }.asConverterFactory(contentType))
-//            .addConverterFactory(
-//                Json {
-//                    ignoreUnknownKeys = true
-//                    isLenient = true
-//                    encodeDefaults = false
-//                }.asConverterFactory("application/json".toMediaType()))
             .build()
     }
 
