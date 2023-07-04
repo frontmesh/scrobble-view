@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ScrobbleView</string>
+    <string name="friend_image">Friend Image</string>
 </resources>

@@ -14,22 +14,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import com.frontmatic.scrobbleview.ui.components.BottomNavBar
+import com.frontmatic.scrobbleview.ui.screens.friends.FriendsScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
-    var selectedItem by remember { mutableStateOf(0) }
+    var selectedItem by remember { mutableStateOf(1) }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Scrobble View",
+                        text = when(selectedItem) {
+                            0 -> "Scrobble View"
+                            1 -> "Friends"
+                            2 -> "Settings"
+                            else -> "Scrobble View"
+                        },
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Bold,
                         )
