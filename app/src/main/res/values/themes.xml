@@ -2,5 +2,7 @@
 <resources>
     <style name="Theme.ScrobbleView" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:colorPrimary">#FFBB86FC</item>
+        <item name="android:colorPrimaryDark">#000000</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

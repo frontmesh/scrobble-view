@@ -17,7 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.frontmatic.scrobbleview.ui.components.BottomNavBar
 import com.frontmatic.scrobbleview.ui.screens.friends.FriendsScreen
+import com.ramcosta.composedestinations.annotation.Destination
 
+
+@Destination(
+    route = "home"
+)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {

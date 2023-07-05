@@ -3,7 +3,20 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
+    id "com.google.devtools.ksp" version "1.7.20-1.0.6"
 }
+
+kotlin {
+    sourceSets {
+        debug {
+            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+        }
+        release {
+            kotlin.srcDir("build/generated/ksp/release/kotlin")
+        }
+    }
+}
+
 
 android {
     namespace 'com.frontmatic.scrobbleview'
@@ -79,8 +92,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
-
-
     // Kotlin serialization
     implementation "com.squareup.okhttp3:okhttp:4.7.2"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
@@ -107,6 +118,10 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.2"
     // add room paging
     implementation "androidx.room:room-paging:2.4.2"
+
+    // Compose Destinations
+    implementation 'io.github.raamcosta.compose-destinations:core:1.7.21-beta'
+    ksp 'io.github.raamcosta.compose-destinations:ksp:1.7.21-beta'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
