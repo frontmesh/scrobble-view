@@ -17,6 +17,20 @@ class LastFmRemoteMediator @Inject constructor(
 ) : RemoteMediator<Int, Friend>() {
     private val friendDao = database.friendDao()
     private val friendRemoteKeysDao = database.friendRemoteKeysDao()
+    override suspend fun initialize(): InitializeAction {
+        val currentTime = System.currentTimeMillis()
+        val lastUpdated = friendRemoteKeysDao.getFirstRemoteKey()?.lastUpdated ?: 0
+        val cacheTimeout = 5 // 5 minutes
+
+        val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
+
+        return if (diffInMinutes.toInt() >= cacheTimeout) {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        } else {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        }
+
+    }
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Friend>): MediatorResult {
         return try {
@@ -55,7 +69,11 @@ class LastFmRemoteMediator @Inject constructor(
                     val nextPage = if (response.attr.page < response.attr.totalPages) response.attr.page + 1 else null
 
                     val keys = response.user.map {
-                        FriendRemoteKeys(name = it.name, prevPage = prevPage, nextPage = nextPage)
+                        FriendRemoteKeys(
+                            name = it.name,
+                            prevPage = prevPage,
+                            nextPage = nextPage
+                        )
                     }
 
                     friendRemoteKeysDao.addAll(keys)

@@ -9,4 +9,5 @@ data class FriendRemoteKeys (
     val name: String,
     val prevPage: Int?,
     val nextPage: Int?,
+    val lastUpdated: Long = System.currentTimeMillis()
 )

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ScrobbleView</string>
     <string name="friend_image">Friend Image</string>
+    <string name="network_error_icon">Network Error Icon</string>
 </resources>
