@@ -11,8 +11,12 @@ interface LastFMApi {
     suspend fun getFriends(
         @Query("method") method: String = "user.getfriends",
         @Query("user") user: String = "vladbc",
-//        @Query("api_key") api_key: String = BuildConfig.API_KEY,
-//        @Query("format") format: String = "json",
         @Query("page") page: Int?
+    ): FriendApiResponse
+
+    @GET(".")
+    suspend fun getUserInfo(
+        @Query("method") method: String = "user.getinfo",
+        @Query("user") user: String
     ): FriendApiResponse
 }

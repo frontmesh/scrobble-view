@@ -8,6 +8,8 @@ class Repository @Inject constructor(
 ) {
     fun getAllFriends() = remote.getAllFriends()
 
+    fun getUserInfo(username: String) = remote.getUserInfo(username)
+
     suspend fun saveUsername(username: String) {
         dataStore.saveUsername(username)
     }

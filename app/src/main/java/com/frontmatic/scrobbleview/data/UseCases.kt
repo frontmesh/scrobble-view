@@ -17,6 +17,12 @@ class GetUsernameUseCase(
     operator fun invoke() = repository.getUsername()
 }
 
+class GetUserInfoUseCase(
+    private val repository: Repository
+) {
+    operator fun invoke(username: String) = repository.getUserInfo(username)
+}
+
 
 class GetAllFriendsUseCase(
     private val repository: Repository

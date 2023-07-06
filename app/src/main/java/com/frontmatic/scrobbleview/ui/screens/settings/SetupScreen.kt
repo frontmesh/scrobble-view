@@ -38,13 +38,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.frontmatic.scrobbleview.R
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 import com.frontmatic.scrobbleview.util.getThemedBackgroundModifier
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 
+@Destination(
+    route = "setup",
+)
 @Composable
-fun SetupScreen() {
+fun SetupScreen(
+    navigator: DestinationsNavigator,
+
+) {
+
     var startAnimation by remember { mutableStateOf(false) }
+
     val alphaAnim by animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
         animationSpec = tween(
@@ -62,8 +74,13 @@ fun SetupScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Setup(alphaAnim: Float = 1f) {
+fun Setup(
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    alphaAnim: Float = 1f,
+    onButtonClick: (String) -> Unit = {}
+) {
 
+    var username by settingsViewModel.searchUsername
     val setupModifer = getThemedBackgroundModifier()
 
     Column(
@@ -73,7 +90,8 @@ fun Setup(alphaAnim: Float = 1f) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        var username by rememberSaveable { mutableStateOf("") }
+//        var username by rememberSaveable { mutableStateOf("") }
+
         Text(
             modifier = Modifier.alpha(alphaAnim),
             text = stringResource(R.string.enter_username),
@@ -87,7 +105,7 @@ fun Setup(alphaAnim: Float = 1f) {
                 modifier = Modifier.alpha(alphaAnim),
                 value = username,
                 onValueChange = { value ->
-                    username = value
+                    settingsViewModel.updateSearchUsername(value)
                 },
                 shape = RoundedCornerShape(16.dp),
                 singleLine = true,
@@ -109,18 +127,23 @@ fun Setup(alphaAnim: Float = 1f) {
             Spacer(modifier = Modifier.width(8.dp))
             IconButton(
                 modifier = Modifier
-                    .alpha(when {
-                        alphaAnim > 0.5f &&
-                        username.isEmpty() -> 0.5f
-                        else -> alphaAnim
-                    })
+                    .alpha(
+                        when {
+                            alphaAnim > 0.5f &&
+                                    username.isEmpty() -> 0.5f
+
+                            else -> alphaAnim
+                        }
+                    )
                     .background(
                         color = Color.White,
                         shape = RoundedCornerShape(16.dp)
                     )
                     .size(56.dp)
                 ,
-                onClick = { /*TODO*/ }, enabled = username.isNotEmpty()
+                onClick = {
+                    onButtonClick(username)
+                }, enabled = username.isNotEmpty()
             ) {
                 Icon(
                     modifier = Modifier.size(24.dp),
@@ -136,7 +159,7 @@ fun Setup(alphaAnim: Float = 1f) {
 @Composable
 @Preview
 fun SetupScreenPreview() {
-    SetupScreen()
+    SetupScreen(navigator = EmptyDestinationsNavigator)
 }
 
 @Composable
