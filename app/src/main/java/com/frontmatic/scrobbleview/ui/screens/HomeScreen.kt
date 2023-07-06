@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.frontmatic.scrobbleview.ui.components.BottomNavBar
 import com.frontmatic.scrobbleview.ui.screens.friends.FriendsScreen
+import com.frontmatic.scrobbleview.ui.screens.settings.SettingsScreen
 import com.ramcosta.composedestinations.annotation.Destination
 
 

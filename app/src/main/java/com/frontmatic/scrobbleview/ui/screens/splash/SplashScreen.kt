@@ -28,6 +28,7 @@ import com.frontmatic.scrobbleview.ui.screens.destinations.HomeScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.SplashScreenDestination
 import com.frontmatic.scrobbleview.ui.theme.Orange80
 import com.frontmatic.scrobbleview.ui.theme.Red80
+import com.frontmatic.scrobbleview.util.getThemedBackgroundModifier
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -82,13 +83,7 @@ fun SplashScreen(
 @Composable
 fun Splash(scaleValue: Float = 0.2f, alphaAnim: Float = 1f) {
 
-    val splashModifier = if (isSystemInDarkTheme()) Modifier.background(
-        Color.Black
-    ) else Modifier.background(
-        Brush.verticalGradient(
-            listOf(Orange80, Red80)
-        )
-    )
+    val splashModifier = getThemedBackgroundModifier()
 
     Box(
         modifier = splashModifier
