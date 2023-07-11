@@ -3,6 +3,8 @@ package com.frontmatic.scrobbleview.di
 import android.content.Context
 import androidx.room.Room
 import com.frontmatic.scrobbleview.data.ScrobbleDatabase
+import com.frontmatic.scrobbleview.data.repository.LocalDataSource
+import com.frontmatic.scrobbleview.data.repository.impl.LocalDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +24,12 @@ object DatabaseModule {
         ScrobbleDatabase::class.java,
         "scrobble_database"
     ).build()
+
+    @Provides
+    @Singleton
+    fun providesLocalDataSource(
+        database: ScrobbleDatabase
+    ) : LocalDataSource {
+        return LocalDataSourceImpl(database)
+    }
 }

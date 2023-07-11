@@ -123,6 +123,16 @@ dependencies {
     implementation 'io.github.raamcosta.compose-destinations:core:1.7.21-beta'
     ksp 'io.github.raamcosta.compose-destinations:ksp:1.7.21-beta'
 
+//    def accompanist_version = "0.21.0"
+//    // Swipe Refresh - Accompanist
+//    implementation("com.google.accompanist:accompanist-swiperefresh:$accompanist_version")
+//    // systemuicontroller
+//    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanist_version")
+//
+//    // accompanist pager and pager indicator
+//    implementation("com.google.accompanist:accompanist-pager:$accompanist_version")
+//    implementation("com.google.accompanist:accompanist-pager-indicators:$accompanist_version")
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

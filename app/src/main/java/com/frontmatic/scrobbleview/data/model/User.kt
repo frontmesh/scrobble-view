@@ -30,7 +30,7 @@ data class User(
     @SerializedName("track_count")
     val trackCount: Int,
 
-    val registered: Registered,
+//    val registered: Registered, // TODO create a database converter
 
     val country: String,
     val gender: String,
@@ -44,3 +44,8 @@ data class User(
     val largeImage: String
         get() = image.find { it.size == ImageSize.LARGE.value }?.url ?: ""
 }
+
+@Serializable
+data class UserApiResponse(
+    val user: User
+)

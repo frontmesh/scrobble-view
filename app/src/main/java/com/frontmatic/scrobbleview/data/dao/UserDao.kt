@@ -9,7 +9,7 @@ import com.frontmatic.scrobbleview.data.model.User
 @Dao
 interface UserDao {
 
-    @Query("SELECT * FROM friends WHERE name = :name")
+    @Query("SELECT * FROM users WHERE name = :name")
     fun getSelectedUser(name: String): User
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -8,5 +8,4 @@ import kotlinx.coroutines.flow.Flow
 interface RemoteDataSource {
     fun getAllFriends(): Flow<PagingData<Friend>>
 
-    fun getUserInfo(username: String): Flow<User>
 }

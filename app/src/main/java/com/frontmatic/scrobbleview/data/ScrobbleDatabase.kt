@@ -8,8 +8,16 @@ import com.frontmatic.scrobbleview.data.dao.FriendDao
 import com.frontmatic.scrobbleview.data.model.FriendRemoteKeys
 import com.frontmatic.scrobbleview.data.dao.FriendRemoteKeysDao
 import com.frontmatic.scrobbleview.data.dao.UserDao
+import com.frontmatic.scrobbleview.data.model.User
 
-@Database(entities = [Friend::class, FriendRemoteKeys::class], version = 1)
+@Database(
+    entities = [
+        Friend::class,
+        FriendRemoteKeys::class,
+        User::class
+   ],
+    version = 1
+)
 @TypeConverters(DatabaseConverter::class)
 abstract class ScrobbleDatabase: RoomDatabase() {
     abstract fun friendDao(): FriendDao

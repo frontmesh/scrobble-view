@@ -1,5 +1,6 @@
 package com.frontmatic.scrobbleview.data
 
+import com.frontmatic.scrobbleview.data.model.User
 import com.frontmatic.scrobbleview.data.repository.Repository
 
 
@@ -20,7 +21,13 @@ class GetUsernameUseCase(
 class GetUserInfoUseCase(
     private val repository: Repository
 ) {
-    operator fun invoke(username: String) = repository.getUserInfo(username)
+    suspend operator fun invoke(username: String) = repository.getUserInfo(username)
+}
+
+class SaveUserInfoUseCase(
+    private val repository: Repository
+) {
+    suspend operator fun invoke(user: User) = repository.saveUserInfo(user)
 }
 
 
@@ -33,5 +40,7 @@ class GetAllFriendsUseCase(
 data class UseCases(
     val saveUsername: SaveUsernameUseCase,
     val getUsername: GetUsernameUseCase,
-    val getAllFriendsUseCase: GetAllFriendsUseCase
+    val getAllFriendsUseCase: GetAllFriendsUseCase,
+    val getUserInfoUseCase: GetUserInfoUseCase,
+    val saveUserInfoUseCase: SaveUserInfoUseCase,
 )

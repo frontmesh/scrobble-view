@@ -2,6 +2,8 @@ package com.frontmatic.scrobbleview.data.api
 
 import com.frontmatic.scrobbleview.BuildConfig
 import com.frontmatic.scrobbleview.data.model.FriendApiResponse
+import com.frontmatic.scrobbleview.data.model.UserApiResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,5 +20,5 @@ interface LastFMApi {
     suspend fun getUserInfo(
         @Query("method") method: String = "user.getinfo",
         @Query("user") user: String
-    ): FriendApiResponse
+    ): Response<UserApiResponse>
 }

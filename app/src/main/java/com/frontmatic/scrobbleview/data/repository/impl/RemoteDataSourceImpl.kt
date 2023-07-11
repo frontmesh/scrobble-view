@@ -1,4 +1,4 @@
-package com.frontmatic.scrobbleview.data.repository
+package com.frontmatic.scrobbleview.data.repository.impl
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
@@ -9,9 +9,10 @@ import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.api.LastFMApi
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.User
+import com.frontmatic.scrobbleview.data.repository.RemoteDataSource
 import kotlinx.coroutines.flow.Flow
 
-@ExperimentalPagingApi
+
 class RemoteDataSourceImpl(
     private val api: LastFMApi,
     private val database: ScrobbleDatabase
@@ -19,6 +20,7 @@ class RemoteDataSourceImpl(
     private val friendDao = database.friendDao()
     private val userDao = database.userDao()
 
+    @ExperimentalPagingApi
     override fun getAllFriends(): Flow<PagingData<Friend>> {
         val pagingSourceFactory = { friendDao.getAllFriends() }
 
@@ -29,8 +31,4 @@ class RemoteDataSourceImpl(
         ).flow
     }
 
-    override fun getUserInfo(username: String): Flow<User> {
-        val user = userDao.getSelectedUser(username)
-        TODO("Not yet implemented")
-    }
 }

@@ -26,7 +26,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +51,6 @@ import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 @Composable
 fun SetupScreen(
     navigator: DestinationsNavigator,
-
 ) {
 
     var startAnimation by remember { mutableStateOf(false) }
@@ -90,8 +88,6 @@ fun Setup(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-//        var username by rememberSaveable { mutableStateOf("") }
-
         Text(
             modifier = Modifier.alpha(alphaAnim),
             text = stringResource(R.string.enter_username),
@@ -143,6 +139,7 @@ fun Setup(
                 ,
                 onClick = {
                     onButtonClick(username)
+                    settingsViewModel.checkLastFMUser()
                 }, enabled = username.isNotEmpty()
             ) {
                 Icon(
