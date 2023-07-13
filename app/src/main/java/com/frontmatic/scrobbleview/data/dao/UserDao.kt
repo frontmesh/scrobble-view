@@ -9,7 +9,7 @@ import com.frontmatic.scrobbleview.data.model.User
 @Dao
 interface UserDao {
 
-    @Query("SELECT * FROM users LIMIT 1")
+    @Query("SELECT * FROM users ORDER BY id DESC LIMIT 1")
     fun getSelectedUser(): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

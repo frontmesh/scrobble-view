@@ -14,7 +14,8 @@ data class Registered(
 @Serializable
 @Entity(tableName = "users")
 data class User(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val name: String,
     val age: Int,
     val subscriber: Int,
