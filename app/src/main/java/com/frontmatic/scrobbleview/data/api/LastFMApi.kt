@@ -12,7 +12,7 @@ interface LastFMApi {
     @GET(".")
     suspend fun getFriends(
         @Query("method") method: String = "user.getfriends",
-        @Query("user") user: String = "vladbc",
+        @Query("user") user: String,
         @Query("page") page: Int?
     ): FriendApiResponse
 

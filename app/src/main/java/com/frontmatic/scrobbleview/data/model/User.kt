@@ -41,8 +41,8 @@ data class User(
 
 ) {
 
-    val largeImage: String
-        get() = image.find { it.size == ImageSize.LARGE.value }?.url ?: ""
+    val largeImage: String?
+        get() = image.find { it.size == ImageSize.LARGE.value }?.url ?: null
 }
 
 @Serializable

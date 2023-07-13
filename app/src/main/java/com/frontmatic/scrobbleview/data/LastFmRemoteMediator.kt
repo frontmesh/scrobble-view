@@ -16,6 +16,7 @@ class LastFmRemoteMediator @Inject constructor(
     private val database: ScrobbleDatabase,
 ) : RemoteMediator<Int, Friend>() {
     private val friendDao = database.friendDao()
+    private val userDao = database.userDao()
     private val friendRemoteKeysDao = database.friendRemoteKeysDao()
     override suspend fun initialize(): InitializeAction {
         val currentTime = System.currentTimeMillis()
@@ -54,7 +55,11 @@ class LastFmRemoteMediator @Inject constructor(
                 }
             }
 
-            val res = api.getFriends(page = page)
+            val user = database.withTransaction {
+                userDao.getSelectedUser()
+            }
+
+            val res = api.getFriends(page = page, user = user?.name ?: "lastfm")
 
             val response = res.friends
 

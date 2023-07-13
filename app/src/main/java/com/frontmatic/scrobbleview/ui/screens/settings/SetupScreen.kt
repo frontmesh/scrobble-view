@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,6 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.frontmatic.scrobbleview.R
+import com.frontmatic.scrobbleview.ui.screens.destinations.HomeScreenDestination
+import com.frontmatic.scrobbleview.ui.screens.destinations.SetupScreenDestination
+import com.frontmatic.scrobbleview.ui.screens.destinations.SplashScreenDestination
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 import com.frontmatic.scrobbleview.util.getThemedBackgroundModifier
 import com.ramcosta.composedestinations.annotation.Destination
@@ -67,19 +71,30 @@ fun SetupScreen(
         startAnimation = true
     }
 
-    Setup(alphaAnim = alphaAnim)
+    Setup(alphaAnim = alphaAnim, navigator = navigator)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Setup(
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    model: SettingsViewModel = hiltViewModel(),
     alphaAnim: Float = 1f,
+    navigator: DestinationsNavigator = EmptyDestinationsNavigator,
     onButtonClick: (String) -> Unit = {}
 ) {
 
-    var username by settingsViewModel.searchUsername
+    var username by model.searchUsername
     val setupModifer = getThemedBackgroundModifier()
+
+    LaunchedEffect(key1 = model.userUIState) {
+        if (model.userUIState is UserUIState.Success) {
+            navigator.navigate(HomeScreenDestination) {
+                popUpTo(SetupScreenDestination.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     Column(
         modifier = setupModifer
@@ -101,7 +116,7 @@ fun Setup(
                 modifier = Modifier.alpha(alphaAnim),
                 value = username,
                 onValueChange = { value ->
-                    settingsViewModel.updateSearchUsername(value)
+                    model.updateSearchUsername(value)
                 },
                 shape = RoundedCornerShape(16.dp),
                 singleLine = true,
@@ -112,6 +127,10 @@ fun Setup(
                         contentDescription = stringResource(R.string.app_logo),
                         tint = Color.Black
                     )
+                },
+                trailingIcon = {
+                    if (model.userUIState is UserUIState.Loading)
+                        CircularProgressIndicator()
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     disabledTextColor = Color.Transparent,
@@ -139,7 +158,7 @@ fun Setup(
                 ,
                 onClick = {
                     onButtonClick(username)
-                    settingsViewModel.checkLastFMUser()
+                    model.checkLastFMUser()
                 }, enabled = username.isNotEmpty()
             ) {
                 Icon(

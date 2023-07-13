@@ -7,8 +7,8 @@ import com.frontmatic.scrobbleview.data.repository.LocalDataSource
 class LocalDataSourceImpl(database: ScrobbleDatabase): LocalDataSource {
     private val userDao = database.userDao()
 
-    override suspend fun getUserInfo(username: String): User? {
-        return userDao.getSelectedUser(username)
+    override suspend fun getUserInfo(): User? {
+        return userDao.getSelectedUser()
     }
 
     override suspend fun saveUserInfo(user: User) {

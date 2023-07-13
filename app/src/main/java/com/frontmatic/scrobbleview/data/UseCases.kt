@@ -2,6 +2,7 @@ package com.frontmatic.scrobbleview.data
 
 import com.frontmatic.scrobbleview.data.model.User
 import com.frontmatic.scrobbleview.data.repository.Repository
+import kotlinx.coroutines.flow.Flow
 
 
 class SaveUsernameUseCase(
@@ -21,7 +22,7 @@ class GetUsernameUseCase(
 class GetUserInfoUseCase(
     private val repository: Repository
 ) {
-    suspend operator fun invoke(username: String) = repository.getUserInfo(username)
+    suspend operator fun invoke() = repository.getUserInfo()
 }
 
 class SaveUserInfoUseCase(

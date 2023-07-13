@@ -19,6 +19,7 @@ import com.frontmatic.scrobbleview.ui.components.BottomNavBar
 import com.frontmatic.scrobbleview.ui.screens.friends.FriendsScreen
 import com.frontmatic.scrobbleview.ui.screens.settings.SettingsScreen
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
 @Destination(
@@ -26,8 +27,10 @@ import com.ramcosta.composedestinations.annotation.Destination
 )
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
-    var selectedItem by remember { mutableStateOf(1) }
+fun HomeScreen(
+    navigator: DestinationsNavigator
+) {
+    var selectedItem by remember { mutableStateOf(2) }
 
     Scaffold(
         topBar = {
@@ -61,7 +64,7 @@ fun HomeScreen() {
             when (selectedItem) {
                 0 -> ChartsScreen()
                 1 -> FriendsScreen()
-                2 -> SettingsScreen()
+                2 -> SettingsScreen(navigator = navigator)
             }
         }
     }

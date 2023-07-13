@@ -10,7 +10,7 @@ class Repository @Inject constructor(
 ) {
     fun getAllFriends() = remote.getAllFriends()
 
-    suspend fun getUserInfo(username: String) = localDataSource.getUserInfo(username)
+    suspend fun getUserInfo() = localDataSource.getUserInfo()
 
     suspend fun saveUserInfo(user: User) {
         localDataSource.saveUserInfo(user)
