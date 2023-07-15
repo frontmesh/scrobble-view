@@ -63,7 +63,8 @@ class LastFmRemoteMediator @Inject constructor(
             }
 
             val user = database.withTransaction {
-                userDao.getSelectedUser()
+                val storedUsername = dataStore.getUsername().first()
+                userDao.getUserInfoByName(storedUsername)
             }
 
             val res = api.getFriends(page = page, user = user?.name ?: "lastfm")

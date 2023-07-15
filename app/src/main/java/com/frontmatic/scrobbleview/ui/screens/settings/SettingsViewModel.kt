@@ -11,6 +11,7 @@ import com.frontmatic.scrobbleview.data.api.LastFMApi
 import com.frontmatic.scrobbleview.data.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
@@ -39,31 +40,45 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun checkLastFMUser() {
-        val userChanged = useCases.getUserChanged()
-        val storedUsername = useCases.getUsername()
         viewModelScope.launch(Dispatchers.IO) {
             userUIState = UserUIState.Loading
-            val username = searchUsername.value
-            val res = api.getUserInfo(user = username)
-            userUIState = if (res.isSuccessful) {
-                val user = res.body()!!.user
+            val queryUsername = searchUsername.value
+            val storedUserInfo = useCases.getUserInfoByName(queryUsername)
 
-                if (!storedUsername.equals("")) { // only skip friend refresh if username is empty
-                    useCases.saveUserChanged(true)
-                }
-
-                useCases.saveUsername(username)
-                useCases.saveUserInfo(user)
-                UserUIState.Success(user)
+            if (storedUserInfo != null) {
+                useCases.saveUsername(queryUsername)
+                useCases.saveUserChanged(true)
+                userUIState = UserUIState.Success(storedUserInfo)
             } else {
-                UserUIState.Error(res.errorBody())
+                fetchUserInfo()
             }
+        }
+    }
+
+    suspend fun fetchUserInfo() {
+        val storedUsername = useCases.getUsername()
+        val queryUsername = searchUsername.value
+        val res = api.getUserInfo(user = queryUsername)
+        userUIState = if (res.isSuccessful) {
+            val user = res.body()!!.user
+
+            // only skip all data refresh relating to user if this is the first time the user is being saved
+            if (!storedUsername.equals("")) {
+                useCases.saveUserChanged(true)
+            }
+
+            useCases.saveUsername(queryUsername)
+            useCases.saveUserInfo(user)
+            UserUIState.Success(user)
+        } else {
+            UserUIState.Error(res.errorBody())
         }
     }
 
     fun getUserInfo() {
         viewModelScope.launch(Dispatchers.IO) {
-            val user = useCases.getUserInfo()
+            val storedUsername = useCases.getUsername().first()
+            val user = useCases.getUserInfoByName(storedUsername)
             userUIState = user?.let { UserUIState.Success(it) } ?: UserUIState.Idle
         }
     }

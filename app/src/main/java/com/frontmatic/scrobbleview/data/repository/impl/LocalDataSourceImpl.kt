@@ -8,8 +8,8 @@ class LocalDataSourceImpl(database: ScrobbleDatabase): LocalDataSource {
     private val userDao = database.userDao()
     private val friendDao = database.friendDao()
 
-    override suspend fun getUserInfo(): User? {
-        return userDao.getSelectedUser()
+    override suspend fun getUserInfoByName(name: String): User? {
+        return userDao.getUserInfoByName(name)
     }
 
     override suspend fun saveUserInfo(user: User) {

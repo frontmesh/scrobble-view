@@ -4,7 +4,7 @@ import android.content.Context
 import com.frontmatic.scrobbleview.data.DeleteAllFriendsUseCase
 import com.frontmatic.scrobbleview.data.GetAllFriendsUseCase
 import com.frontmatic.scrobbleview.data.GetUserChangedUseCase
-import com.frontmatic.scrobbleview.data.GetUserInfoUseCase
+import com.frontmatic.scrobbleview.data.GetUserInfoByNameUseCase
 import com.frontmatic.scrobbleview.data.GetUsernameUseCase
 import com.frontmatic.scrobbleview.data.SaveUserChangedUseCase
 import com.frontmatic.scrobbleview.data.SaveUserInfoUseCase
@@ -40,7 +40,7 @@ object RepositoryModule {
             saveUsername = SaveUsernameUseCase(repository),
             getUsername = GetUsernameUseCase(repository),
             getAllFriends = GetAllFriendsUseCase(repository),
-            getUserInfo = GetUserInfoUseCase(repository),
+            getUserInfoByName = GetUserInfoByNameUseCase(repository),
             saveUserInfo = SaveUserInfoUseCase(repository),
             deleteAllFriends = DeleteAllFriendsUseCase(repository),
             getUserChanged = GetUserChangedUseCase(repository),

@@ -18,10 +18,10 @@ class GetUsernameUseCase(
     operator fun invoke() = repository.getUsername()
 }
 
-class GetUserInfoUseCase(
+class GetUserInfoByNameUseCase(
     private val repository: Repository
 ) {
-    suspend operator fun invoke() = repository.getUserInfo()
+    suspend operator fun invoke(name: String) = repository.getUserInfoByName(name)
 }
 
 class SaveUserInfoUseCase(
@@ -59,7 +59,7 @@ data class UseCases(
     val saveUsername: SaveUsernameUseCase,
     val getUsername: GetUsernameUseCase,
     val getAllFriends: GetAllFriendsUseCase,
-    val getUserInfo: GetUserInfoUseCase,
+    val getUserInfoByName: GetUserInfoByNameUseCase,
     val saveUserInfo: SaveUserInfoUseCase,
     val deleteAllFriends: DeleteAllFriendsUseCase,
     val getUserChanged: GetUserChangedUseCase,

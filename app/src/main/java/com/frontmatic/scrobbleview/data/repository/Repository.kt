@@ -12,7 +12,7 @@ class Repository @Inject constructor(
 
     suspend fun deleteAllFriends() = localDataSource.deleteAllFriends()
 
-    suspend fun getUserInfo() = localDataSource.getUserInfo()
+    suspend fun getUserInfoByName(name: String) = localDataSource.getUserInfoByName(name)
 
     suspend fun saveUserInfo(user: User) {
         localDataSource.saveUserInfo(user)
