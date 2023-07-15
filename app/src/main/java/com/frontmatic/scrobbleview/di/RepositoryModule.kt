@@ -1,15 +1,18 @@
 package com.frontmatic.scrobbleview.di
 
 import android.content.Context
+import com.frontmatic.scrobbleview.data.DeleteAllFriendsUseCase
 import com.frontmatic.scrobbleview.data.GetAllFriendsUseCase
+import com.frontmatic.scrobbleview.data.GetUserChangedUseCase
 import com.frontmatic.scrobbleview.data.GetUserInfoUseCase
 import com.frontmatic.scrobbleview.data.GetUsernameUseCase
+import com.frontmatic.scrobbleview.data.SaveUserChangedUseCase
 import com.frontmatic.scrobbleview.data.SaveUserInfoUseCase
 import com.frontmatic.scrobbleview.data.SaveUsernameUseCase
 import com.frontmatic.scrobbleview.data.UseCases
 import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
-import com.frontmatic.scrobbleview.data.repository.impl.DataStoreOperationsImpl
 import com.frontmatic.scrobbleview.data.repository.Repository
+import com.frontmatic.scrobbleview.data.repository.impl.DataStoreOperationsImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,9 +39,12 @@ object RepositoryModule {
         return UseCases(
             saveUsername = SaveUsernameUseCase(repository),
             getUsername = GetUsernameUseCase(repository),
-            getAllFriendsUseCase = GetAllFriendsUseCase(repository),
-            getUserInfoUseCase = GetUserInfoUseCase(repository),
-            saveUserInfoUseCase = SaveUserInfoUseCase(repository)
+            getAllFriends = GetAllFriendsUseCase(repository),
+            getUserInfo = GetUserInfoUseCase(repository),
+            saveUserInfo = SaveUserInfoUseCase(repository),
+            deleteAllFriends = DeleteAllFriendsUseCase(repository),
+            getUserChanged = GetUserChangedUseCase(repository),
+            saveUserChanged = SaveUserChangedUseCase(repository),
         )
     }
 }

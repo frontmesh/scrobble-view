@@ -10,6 +10,8 @@ class Repository @Inject constructor(
 ) {
     fun getAllFriends() = remote.getAllFriends()
 
+    suspend fun deleteAllFriends() = localDataSource.deleteAllFriends()
+
     suspend fun getUserInfo() = localDataSource.getUserInfo()
 
     suspend fun saveUserInfo(user: User) {
@@ -19,6 +21,12 @@ class Repository @Inject constructor(
     suspend fun saveUsername(username: String) {
         dataStore.saveUsername(username)
     }
+
+    suspend fun saveUserChanged(userChanged: Boolean) {
+        dataStore.saveUserChanged(userChanged)
+    }
+
+    fun getUserChanged() = dataStore.getUserChanged()
 
     fun getUsername() = dataStore.getUsername()
 }

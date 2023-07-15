@@ -1,6 +1,5 @@
 package com.frontmatic.scrobbleview.ui.screens.friends
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,9 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +43,23 @@ import com.frontmatic.scrobbleview.ui.components.EmptyScreen
 import com.frontmatic.scrobbleview.ui.components.ShimmerEffect
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 
+@Composable
+fun FriendsScreen(
+    friendsViewModel: FriendsViewModel = hiltViewModel()
+) {
+    val friends = friendsViewModel.friends.collectAsLazyPagingItems()
+
+    val result = handlePagingResult(friends = friends)
+
+
+    if (result) {
+        LazyColumn(contentPadding = PaddingValues(PAGE_PADDING)) {
+            items(count = friends.itemCount) { index ->
+                FriendItem(friend = friends[index]!!)
+            }
+        }
+    }
+}
 
 @Composable
 fun FriendItem (
@@ -86,23 +105,6 @@ fun FriendItem (
         }
     }
     Spacer(modifier = Modifier.height(8.dp))
-}
-
-@Composable
-fun FriendsScreen(
-    friendsViewModel: FriendsViewModel = hiltViewModel()
-) {
-    val friends = friendsViewModel.friends.collectAsLazyPagingItems()
-
-    val result = handlePagingResult(friends = friends)
-
-    if (result) {
-        LazyColumn(contentPadding = PaddingValues(PAGE_PADDING)) {
-            items(count = friends.itemCount) { index ->
-                FriendItem(friend = friends[index]!!)
-            }
-        }
-    }
 }
 
 @Composable

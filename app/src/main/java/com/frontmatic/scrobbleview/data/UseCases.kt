@@ -2,7 +2,6 @@ package com.frontmatic.scrobbleview.data
 
 import com.frontmatic.scrobbleview.data.model.User
 import com.frontmatic.scrobbleview.data.repository.Repository
-import kotlinx.coroutines.flow.Flow
 
 
 class SaveUsernameUseCase(
@@ -38,10 +37,31 @@ class GetAllFriendsUseCase(
     operator fun invoke() = repository.getAllFriends()
 }
 
+class DeleteAllFriendsUseCase(
+    private val repository: Repository
+) {
+    suspend operator fun invoke() = repository.deleteAllFriends()
+}
+
+class GetUserChangedUseCase(
+    private val repository: Repository
+) {
+    operator fun invoke() = repository.getUserChanged()
+}
+
+class SaveUserChangedUseCase(
+    private val repository: Repository
+) {
+    suspend operator fun invoke(userChanged: Boolean) = repository.saveUserChanged(userChanged)
+}
+
 data class UseCases(
     val saveUsername: SaveUsernameUseCase,
     val getUsername: GetUsernameUseCase,
-    val getAllFriendsUseCase: GetAllFriendsUseCase,
-    val getUserInfoUseCase: GetUserInfoUseCase,
-    val saveUserInfoUseCase: SaveUserInfoUseCase,
+    val getAllFriends: GetAllFriendsUseCase,
+    val getUserInfo: GetUserInfoUseCase,
+    val saveUserInfo: SaveUserInfoUseCase,
+    val deleteAllFriends: DeleteAllFriendsUseCase,
+    val getUserChanged: GetUserChangedUseCase,
+    val saveUserChanged: SaveUserChangedUseCase
 )

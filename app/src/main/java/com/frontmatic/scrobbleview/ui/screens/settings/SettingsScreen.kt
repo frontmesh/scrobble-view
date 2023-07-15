@@ -4,14 +4,11 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.frontmatic.scrobbleview.BuildConfig
 import com.frontmatic.scrobbleview.R
 import com.frontmatic.scrobbleview.data.model.User
 import com.frontmatic.scrobbleview.ui.screens.destinations.SetupScreenDestination
@@ -63,29 +61,22 @@ fun SettingsScreen(
             SettingsUserInfo(user)
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(PAGE_PADDING),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.app_title),
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(text = "Version 1.0.0")
-        }
+        AppVersion();
     }
 }
 
 @Composable
 fun SettingsUserImage(user: User, onUserChange: () -> Unit) {
     Row (
-        modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(bottom = 8.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.Start
     ) {
-        Column(modifier = Modifier.fillMaxWidth(0.2f).padding(start = 8.dp)) {
+        Column(modifier = Modifier
+            .fillMaxWidth(0.2f)
+            .padding(start = 8.dp)) {
             AsyncImage(
                 model = user.largeImage,
                 error = painterResource(R.drawable.ic_headphones),
@@ -202,6 +193,35 @@ fun InfoBox(
             )
         }
     }
+}
+
+@Composable
+fun AppVersion() {
+
+    // on below line we are creating a column
+    Column(
+        // on below line we are adding a modifier to it
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text(
+            text = stringResource(R.string.app_name),
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            fontWeight = FontWeight.Bold,
+        )
+
+        val version =
+            "Version: " + BuildConfig.VERSION_NAME
+
+        Text(
+            text = version,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+
+    }
+
 }
 
 

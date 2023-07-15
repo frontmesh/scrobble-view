@@ -8,10 +8,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-@HiltViewModel
 
+@HiltViewModel
 class FriendsViewModel @Inject constructor(
-    useCases: UseCases
+    private val useCases: UseCases,
 ): ViewModel() {
-    val friends: Flow<PagingData<Friend>> = useCases.getAllFriendsUseCase()
+    val friends: Flow<PagingData<Friend>> = useCases.getAllFriends()
 }

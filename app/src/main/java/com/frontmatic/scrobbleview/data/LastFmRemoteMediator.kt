@@ -1,5 +1,6 @@
 package com.frontmatic.scrobbleview.data
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -8,12 +9,16 @@ import androidx.room.withTransaction
 import com.frontmatic.scrobbleview.data.api.LastFMApi
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.FriendRemoteKeys
+import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @ExperimentalPagingApi
 class LastFmRemoteMediator @Inject constructor(
     private val api: LastFMApi,
     private val database: ScrobbleDatabase,
+    private val dataStore: DataStoreOperations
 ) : RemoteMediator<Int, Friend>() {
     private val friendDao = database.friendDao()
     private val userDao = database.userDao()
@@ -25,12 +30,14 @@ class LastFmRemoteMediator @Inject constructor(
 
         val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
 
-        return if (diffInMinutes.toInt() >= cacheTimeout) {
+        val userChanged = dataStore.getUserChanged().first()
+
+        return if (diffInMinutes.toInt() >= cacheTimeout || userChanged) {
+            dataStore.saveUserChanged(false)
             InitializeAction.LAUNCH_INITIAL_REFRESH
         } else {
             InitializeAction.SKIP_INITIAL_REFRESH
         }
-
     }
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Friend>): MediatorResult {

@@ -9,7 +9,7 @@ import com.frontmatic.scrobbleview.data.model.Friend
 
 @Dao
 interface FriendDao {
-    @Query("SELECT * FROM friends ORDER BY name ASC")
+    @Query("SELECT * FROM friends")
     fun getAllFriends(): PagingSource<Int, Friend>
 
     @Query("SELECT * FROM friends WHERE name = :name")
