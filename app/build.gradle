@@ -40,6 +40,7 @@ android {
             secretsProperties.load(new FileInputStream(secretsPropertiesFile))
 
             buildConfigField("String", "API_KEY", secretsProperties.getProperty("API_KEY"))
+            buildConfigField("String", "FEEDBACK_EMAIL", secretsProperties.getProperty("FEEDBACK_EMAIL"))
         }
 
         buildConfigField("Boolean", "DEBUG", "true")

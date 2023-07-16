@@ -40,22 +40,34 @@ import com.frontmatic.scrobbleview.R
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.Image
 import com.frontmatic.scrobbleview.ui.components.EmptyScreen
+import com.frontmatic.scrobbleview.ui.components.RootScreen
 import com.frontmatic.scrobbleview.ui.components.ShimmerEffect
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Destination(
+    route = "friends"
+)
 @Composable
 fun FriendsScreen(
-    friendsViewModel: FriendsViewModel = hiltViewModel()
+    friendsViewModel: FriendsViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator
 ) {
-    val friends = friendsViewModel.friends.collectAsLazyPagingItems()
 
-    val result = handlePagingResult(friends = friends)
+    RootScreen(
+        navigator = navigator,
+    ) {
+        val friends = friendsViewModel.friends.collectAsLazyPagingItems()
+
+        val result = handlePagingResult(friends = friends)
 
 
-    if (result) {
-        LazyColumn(contentPadding = PaddingValues(PAGE_PADDING)) {
-            items(count = friends.itemCount) { index ->
-                FriendItem(friend = friends[index]!!)
+        if (result) {
+            LazyColumn(contentPadding = PaddingValues(PAGE_PADDING)) {
+                items(count = friends.itemCount) { index ->
+                    FriendItem(friend = friends[index]!!)
+                }
             }
         }
     }

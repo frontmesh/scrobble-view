@@ -17,46 +17,57 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.frontmatic.scrobbleview.ui.components.RootScreen
 import com.frontmatic.scrobbleview.ui.components.TabRow
 import com.frontmatic.scrobbleview.ui.components.TabTitle
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
+@Destination(
+    route = "charts"
+)
 @Composable
-fun ChartsScreen() {
+fun ChartsScreen(
+    navigator: DestinationsNavigator
+) {
     var selectedTabPosition by remember { mutableStateOf(0) }
 
     val items = listOf(
         "Recent", "Seven Days", "One Month", "Three Months", "Six Months", "One Year", "Overall"
     )
 
-    Column(
-        verticalArrangement = Arrangement.Top,
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize()
-                .horizontalScroll(rememberScrollState())
+    RootScreen(navigator = navigator) {
+        
+        Column(
+            verticalArrangement = Arrangement.Top,
         ) {
-            TabRow(
-                selectedTabPosition = selectedTabPosition
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize()
+                    .horizontalScroll(rememberScrollState())
             ) {
-                items.forEachIndexed { index, s ->
-                    TabTitle(
-                        s,
-                        position = index,
-                        color = if (selectedTabPosition == index)
-                            MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary,
-                    ) { selectedTabPosition = index }
+                TabRow(
+                    selectedTabPosition = selectedTabPosition
+                ) {
+                    items.forEachIndexed { index, s ->
+                        TabTitle(
+                            s,
+                            position = index,
+                            color = if (selectedTabPosition == index)
+                                MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary,
+                        ) { selectedTabPosition = index }
+                    }
                 }
             }
-        }
 
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = items[selectedTabPosition],
-                style = MaterialTheme.typography.titleMedium
-            )
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = items[selectedTabPosition],
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
         }
 
     }

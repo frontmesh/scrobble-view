@@ -4,6 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.frontmatic.scrobbleview.data.LastFmRemoteMediator
 import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.api.LastFMApi
@@ -25,7 +26,7 @@ class RemoteDataSourceImpl(
         val pagingSourceFactory = { friendDao.getAllFriends() }
 
         return Pager(
-            config = PagingConfig(pageSize = 50, enablePlaceholders = false),
+            config = PagingConfig(pageSize = 50, initialLoadSize = 50 * 2, enablePlaceholders = true),
             remoteMediator = LastFmRemoteMediator(api, database, datastore),
             pagingSourceFactory = pagingSourceFactory
         ).flow

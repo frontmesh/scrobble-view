@@ -1,12 +1,12 @@
 package com.frontmatic.scrobbleview.ui.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person3
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.StackedLineChart
-import androidx.compose.material.icons.outlined.Person3
+import androidx.compose.material.icons.outlined.MusicNote
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.StackedLineChart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -19,28 +19,80 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavController
+import androidx.navigation.NavOptionsBuilder
+import com.frontmatic.scrobbleview.ui.screens.NavGraphs
+import com.frontmatic.scrobbleview.ui.screens.appCurrentDestinationAsState
+import com.frontmatic.scrobbleview.ui.screens.destinations.ChartsScreenDestination
+import com.frontmatic.scrobbleview.ui.screens.destinations.FriendsScreenDestination
+import com.frontmatic.scrobbleview.ui.screens.destinations.SettingsScreenDestination
+import com.frontmatic.scrobbleview.ui.screens.startAppDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.popUpTo
+import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
+import com.ramcosta.composedestinations.utils.isRouteOnBackStack
 
-data class NavMenuItem(val icon: ImageVector, val iconSelected: ImageVector, val title: String)
+data class NavMenuItem(
+    val icon: ImageVector,
+    val iconSelected: ImageVector,
+    val title: String,
+    val direction: DirectionDestinationSpec
+)
+
+
+val bottomNavItems = listOf(
+    NavMenuItem(
+        title = "Charts",
+        iconSelected = Icons.Filled.MusicNote,
+        icon = Icons.Outlined.MusicNote,
+        direction = ChartsScreenDestination
+    ),
+    NavMenuItem(
+        title = "Friends",
+        iconSelected = Icons.Filled.People,
+        icon = Icons.Outlined.People,
+        direction = FriendsScreenDestination
+    ),
+    NavMenuItem(
+        title = "Settings",
+        iconSelected = Icons.Filled.Settings,
+        icon = Icons.Outlined.Settings,
+        direction = SettingsScreenDestination
+    )
+)
 
 @Composable
-fun BottomNavBar(onNavigationItemClick: (Int) -> Unit) {
+fun BottomNavBar(
+    navController: NavController,
+    navigator: DestinationsNavigator,
+//    onNavigationItemClick: (Int) -> Unit
+) {
     var selectedItem by remember { mutableStateOf(0) }
-    val items = listOf(
-        NavMenuItem(title = "Charts", iconSelected = Icons.Filled.StackedLineChart, icon = Icons.Outlined.StackedLineChart),
-        NavMenuItem(title = "Friends", iconSelected = Icons.Filled.Person3, icon = Icons.Outlined.Person3),
-        NavMenuItem(title = "Settings", iconSelected = Icons.Filled.Settings, icon = Icons.Outlined.Settings)
-    )
+
+    val currentDestination = (navController.appCurrentDestinationAsState().value
+        ?: NavGraphs.root.startAppDestination)
+
     NavigationBar() {
-        items.forEachIndexed { index, item ->
-            val selected = index == selectedItem
-            val icon = if (selected) item.iconSelected else item.icon
+        bottomNavItems.forEachIndexed { index, item ->
+            val isCurrentDestOnBackStack = navController.isRouteOnBackStack(item.direction)
+            val selected = currentDestination?.route == item.direction.route
+            val icon = if (isCurrentDestOnBackStack) item.iconSelected else item.icon
             NavigationBarItem(
                 icon = { Icon(icon, contentDescription = item.title) },
                 label = { Text(item.title) },
-                selected = selected,
+                selected = isCurrentDestOnBackStack,
                 onClick = {
-                    selectedItem = index
-                    onNavigationItemClick(index)
+                    navigator.navigate(item.direction) {
+                        popUpTo(NavGraphs.root) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+//                    selectedItem = index
+//                    onNavigationItemClick(index)
                 },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = MaterialTheme.colorScheme.primary,

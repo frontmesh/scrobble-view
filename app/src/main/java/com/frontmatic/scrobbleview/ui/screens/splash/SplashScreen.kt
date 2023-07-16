@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.frontmatic.scrobbleview.R
-import com.frontmatic.scrobbleview.ui.screens.destinations.HomeScreenDestination
+import com.frontmatic.scrobbleview.ui.screens.destinations.ChartsScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.SetupScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.SplashScreenDestination
 import com.frontmatic.scrobbleview.util.getThemedBackgroundModifier
@@ -73,7 +73,7 @@ fun SplashScreen(
         delay(1500)
 
         val destination = if (usernameSet) {
-            HomeScreenDestination
+            ChartsScreenDestination
         } else {
             SetupScreenDestination
         }

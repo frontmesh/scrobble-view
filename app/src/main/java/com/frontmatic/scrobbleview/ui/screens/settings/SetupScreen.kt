@@ -40,9 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.frontmatic.scrobbleview.R
-import com.frontmatic.scrobbleview.ui.screens.destinations.HomeScreenDestination
+import com.frontmatic.scrobbleview.ui.screens.destinations.ChartsScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.SetupScreenDestination
-import com.frontmatic.scrobbleview.ui.screens.destinations.SplashScreenDestination
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 import com.frontmatic.scrobbleview.util.getThemedBackgroundModifier
 import com.ramcosta.composedestinations.annotation.Destination
@@ -88,7 +87,7 @@ fun Setup(
 
     LaunchedEffect(key1 = model.userUIState) {
         if (model.userUIState is UserUIState.Success) {
-            navigator.navigate(HomeScreenDestination) {
+            navigator.navigate(ChartsScreenDestination) {
                 popUpTo(SetupScreenDestination.route) {
                     inclusive = true
                 }

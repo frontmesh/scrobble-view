@@ -5,4 +5,7 @@
     <string name="app_logo">App Logo</string>
     <string name="enter_username">enter your last.fm username</string>
     <string name="app_title">Scrobble View</string>
+    <string name="scrobbles">Scrobbles</string>
+    <string name="artists">Artists</string>
+    <string name="tracks">Tracks</string>
 </resources>
