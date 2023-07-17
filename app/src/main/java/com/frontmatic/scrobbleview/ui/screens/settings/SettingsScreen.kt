@@ -12,13 +12,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Mail
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,14 +45,16 @@ import com.frontmatic.scrobbleview.BuildConfig
 import com.frontmatic.scrobbleview.R
 import com.frontmatic.scrobbleview.data.model.User
 import com.frontmatic.scrobbleview.ui.components.Header
-import com.frontmatic.scrobbleview.ui.components.RootScreen
 import com.frontmatic.scrobbleview.ui.screens.destinations.SetupScreenDestination
 import com.frontmatic.scrobbleview.ui.theme.INFO_ICON_SIZE
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
+import com.frontmatic.scrobbleview.ui.theme.ScrobbleViewTheme
 import com.frontmatic.scrobbleview.util.formatNumberWithSeparator
 import com.frontmatic.scrobbleview.util.sendMail
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+
+
 
 @Destination(
     route = "settings"
@@ -60,30 +64,63 @@ fun SettingsScreen(
     model: SettingsViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
 ) {
-    RootScreen(
-        navigator = navigator,
+
+    val handleUserChange = {
+        navigator.navigate(SetupScreenDestination)
+    }
+
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(PAGE_PADDING)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(PAGE_PADDING)
-        ) {
 
-            LaunchedEffect(key1 = model.userUIState) {
-                model.getUserInfo()
-            }
-
-            if (model.userUIState is UserUIState.Success) {
-                val user = (model.userUIState as UserUIState.Success).user
-                Header(text= "User", modifier = Modifier.padding(bottom = 16.dp, start = 8.dp),)
-                SettingsUserImage(user, onUserChange = {
-                    navigator.navigate(SetupScreenDestination)
-                })
-                SettingsUserInfo(user)
-            }
-            SettingsScreenMenu()
-            AppVersion()
+        LaunchedEffect(key1 = model.userUIState) {
+            model.getUserInfo()
         }
+
+        val userState = model.userUIState
+
+        Header(text= "User", modifier = Modifier.padding(bottom = 16.dp, start = 8.dp))
+        if (userState is UserUIState.Success) {
+            val user = userState.user
+
+            SettingsUserImage(user, onUserChange = handleUserChange)
+            SettingsUserInfo(user)
+        } else if (userState is UserUIState.Error) {
+            SettingsUserError(userState.message, handleUserChange = handleUserChange)
+        }
+
+        SettingsScreenMenu()
+        AppVersion()
+    }
+
+}
+
+@Composable
+fun ChangeUserButton(onClick: () -> Unit) {
+    OutlinedButton(onClick = onClick) {
+        Text(text = "Change user")
+    }
+}
+
+@Composable
+fun SettingsUserError(message:String, handleUserChange: () -> Unit) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(start = 8.dp),
+    ) {
+        Icon(imageVector = Icons.Default.Warning, contentDescription = message)
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+            modifier = Modifier.padding(start = 8.dp , end = 16.dp),
+        )
+        ChangeUserButton(onClick = handleUserChange)
     }
 }
 
@@ -139,13 +176,7 @@ fun SettingsUserImage(user: User, onUserChange: () -> Unit) {
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier.fillMaxWidth(0.8f)
             ) {
-                Button(
-                    modifier = Modifier
-                        .alpha(0.8f),
-                    onClick = onUserChange,
-                ) {
-                    Text(text = "Change user")
-                }
+                ChangeUserButton(onClick = onUserChange)
             }
         }
     }
@@ -337,6 +368,22 @@ fun SettingsScreenMenu() {
 
 @Preview(showBackground = true)
 @Composable
+fun PreviewSettingsUserError() {
+    SettingsUserError("User not found", handleUserChange = {})
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun PreviewDarkSettingsUserError() {
+    ScrobbleViewTheme {
+        Surface {
+            SettingsUserError("User not found", handleUserChange = {})
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 fun PreviewInfoBox() {
     InfoBox(
         icon = painterResource(id = R.drawable.ic_splash_logo),
@@ -349,11 +396,15 @@ fun PreviewInfoBox() {
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewDarkInfoBox() {
-    InfoBox(
-        icon = painterResource(id = R.drawable.ic_splash_logo),
-        iconColor = MaterialTheme.colorScheme.tertiary,
-        bigText = "Scrobbles",
-        smallText = "20,000",
-        textColor = MaterialTheme.colorScheme.onSurface,
-    )
+    ScrobbleViewTheme {
+        Surface{
+            InfoBox(
+                icon = painterResource(id = R.drawable.ic_splash_logo),
+                iconColor = MaterialTheme.colorScheme.tertiary,
+                bigText = "Scrobbles",
+                smallText = "20,000",
+                textColor = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
 }

@@ -21,7 +21,7 @@ sealed interface UserUIState {
     object Idle : UserUIState
     object Loading : UserUIState
     data class Success(val user: User) : UserUIState
-    data class Error(val errorBody: ResponseBody?) : UserUIState
+    data class Error(val message: String) : UserUIState
 }
 
 @HiltViewModel
@@ -42,7 +42,7 @@ class SettingsViewModel @Inject constructor(
     fun checkLastFMUser() {
         viewModelScope.launch(Dispatchers.IO) {
             userUIState = UserUIState.Loading
-            val queryUsername = searchUsername.value
+            val queryUsername = searchUsername.value.trim()
             val storedUserInfo = useCases.getUserInfoByName(queryUsername)
 
             if (storedUserInfo != null) {
@@ -57,7 +57,7 @@ class SettingsViewModel @Inject constructor(
 
     suspend fun fetchUserInfo() {
         val storedUsername = useCases.getUsername()
-        val queryUsername = searchUsername.value
+        val queryUsername = searchUsername.value.trim()
         val res = api.getUserInfo(user = queryUsername)
         userUIState = if (res.isSuccessful) {
             val user = res.body()!!.user
@@ -71,15 +71,16 @@ class SettingsViewModel @Inject constructor(
             useCases.saveUserInfo(user)
             UserUIState.Success(user)
         } else {
-            UserUIState.Error(res.errorBody())
+            UserUIState.Error(res.errorBody().toString())
         }
     }
 
     fun getUserInfo() {
+        userUIState = UserUIState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             val storedUsername = useCases.getUsername().first()
             val user = useCases.getUserInfoByName(storedUsername)
-            userUIState = user?.let { UserUIState.Success(it) } ?: UserUIState.Idle
+            userUIState = user?.let { UserUIState.Success(it) } ?: UserUIState.Error("User not found")
         }
     }
 }

@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.frontmatic.scrobbleview.ui.components.RootScreen
 import com.frontmatic.scrobbleview.ui.components.TabRow
 import com.frontmatic.scrobbleview.ui.components.TabTitle
 import com.ramcosta.composedestinations.annotation.Destination
@@ -37,38 +36,34 @@ fun ChartsScreen(
         "Recent", "Seven Days", "One Month", "Three Months", "Six Months", "One Year", "Overall"
     )
 
-    RootScreen(navigator = navigator) {
-        
-        Column(
-            verticalArrangement = Arrangement.Top,
+    Column(
+        verticalArrangement = Arrangement.Top,
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentSize()
+                .horizontalScroll(rememberScrollState())
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize()
-                    .horizontalScroll(rememberScrollState())
+            TabRow(
+                selectedTabPosition = selectedTabPosition
             ) {
-                TabRow(
-                    selectedTabPosition = selectedTabPosition
-                ) {
-                    items.forEachIndexed { index, s ->
-                        TabTitle(
-                            s,
-                            position = index,
-                            color = if (selectedTabPosition == index)
-                                MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary,
-                        ) { selectedTabPosition = index }
-                    }
+                items.forEachIndexed { index, s ->
+                    TabTitle(
+                        s,
+                        position = index,
+                        color = if (selectedTabPosition == index)
+                            MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary,
+                    ) { selectedTabPosition = index }
                 }
-            }
-
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = items[selectedTabPosition],
-                    style = MaterialTheme.typography.titleMedium
-                )
             }
         }
 
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = items[selectedTabPosition],
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
     }
 }

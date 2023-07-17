@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.frontmatic.scrobbleview.R
-import com.frontmatic.scrobbleview.ui.screens.destinations.ChartsScreenDestination
+import com.frontmatic.scrobbleview.ui.screens.destinations.SettingsScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.SetupScreenDestination
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 import com.frontmatic.scrobbleview.util.getThemedBackgroundModifier
@@ -87,10 +87,11 @@ fun Setup(
 
     LaunchedEffect(key1 = model.userUIState) {
         if (model.userUIState is UserUIState.Success) {
-            navigator.navigate(ChartsScreenDestination) {
+            navigator.navigate(SettingsScreenDestination) {
                 popUpTo(SetupScreenDestination.route) {
                     inclusive = true
                 }
+                launchSingleTop = true
             }
         }
     }

@@ -14,21 +14,14 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
 import com.frontmatic.scrobbleview.ui.screens.NavGraphs
 import com.frontmatic.scrobbleview.ui.screens.appCurrentDestinationAsState
 import com.frontmatic.scrobbleview.ui.screens.destinations.ChartsScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.FriendsScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.SettingsScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.startAppDestination
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.navigation.popUpTo
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
@@ -66,33 +59,27 @@ val bottomNavItems = listOf(
 @Composable
 fun BottomNavBar(
     navController: NavController,
-    navigator: DestinationsNavigator,
-//    onNavigationItemClick: (Int) -> Unit
 ) {
-    var selectedItem by remember { mutableStateOf(0) }
 
     val currentDestination = (navController.appCurrentDestinationAsState().value
         ?: NavGraphs.root.startAppDestination)
 
     NavigationBar() {
-        bottomNavItems.forEachIndexed { index, item ->
+        bottomNavItems.forEach { item ->
             val isCurrentDestOnBackStack = navController.isRouteOnBackStack(item.direction)
-            val selected = currentDestination?.route == item.direction.route
             val icon = if (isCurrentDestOnBackStack) item.iconSelected else item.icon
             NavigationBarItem(
                 icon = { Icon(icon, contentDescription = item.title) },
                 label = { Text(item.title) },
                 selected = isCurrentDestOnBackStack,
                 onClick = {
-                    navigator.navigate(item.direction) {
+                    navController.navigate(item.direction) {
                         popUpTo(NavGraphs.root) {
                             saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true
                     }
-//                    selectedItem = index
-//                    onNavigationItemClick(index)
                 },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = MaterialTheme.colorScheme.primary,

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import com.frontmatic.scrobbleview.R
+import com.frontmatic.scrobbleview.ui.theme.ScrobbleViewTheme
+import java.lang.Exception
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
@@ -91,9 +94,10 @@ fun EmptyContent(alphaAnim: Float = 1f, icon: Int, messsage: String) {
 }
 
 fun parseErrorMessage(error: LoadState.Error): String {
-    return when (error.error) {
+    return when (val e = error.error) {
         is SocketTimeoutException -> "Server unavailable."
         is ConnectException -> "Internet unavailable."
+        is Exception -> e.message.toString()
         else -> "Unknown error."
     }
 }
@@ -108,7 +112,9 @@ fun EmptyScreenPreview() {
 @Composable
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 fun EmptyScreenPreviewDark() {
-    EmptyScreen()
+    ScrobbleViewTheme {
+        EmptyScreen()
+    }
 }
 
 @Composable
@@ -118,7 +124,11 @@ fun EmptyContentPreview() {
 }
 
 @Composable
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 fun EmptyContentPreviewDark() {
-    EmptyContent(icon = R.drawable.network_error, messsage = "Internet unavailable.")
+    ScrobbleViewTheme {
+        Surface {
+            EmptyContent(icon = R.drawable.network_error, messsage = "Internet unavailable.")
+        }
+    }
 }

@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,11 +37,9 @@ import com.frontmatic.scrobbleview.R
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.Image
 import com.frontmatic.scrobbleview.ui.components.EmptyScreen
-import com.frontmatic.scrobbleview.ui.components.RootScreen
 import com.frontmatic.scrobbleview.ui.components.ShimmerEffect
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination(
     route = "friends"
@@ -52,25 +47,21 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Composable
 fun FriendsScreen(
     friendsViewModel: FriendsViewModel = hiltViewModel(),
-    navigator: DestinationsNavigator
 ) {
 
-    RootScreen(
-        navigator = navigator,
-    ) {
-        val friends = friendsViewModel.friends.collectAsLazyPagingItems()
+    val friends = friendsViewModel.friends.collectAsLazyPagingItems()
 
-        val result = handlePagingResult(friends = friends)
+    val result = handlePagingResult(friends = friends)
 
 
-        if (result) {
-            LazyColumn(contentPadding = PaddingValues(PAGE_PADDING)) {
-                items(count = friends.itemCount) { index ->
-                    FriendItem(friend = friends[index]!!)
-                }
+    if (result) {
+        LazyColumn(contentPadding = PaddingValues(PAGE_PADDING)) {
+            items(count = friends.itemCount) { index ->
+                FriendItem(friend = friends[index]!!)
             }
         }
     }
+
 }
 
 @Composable

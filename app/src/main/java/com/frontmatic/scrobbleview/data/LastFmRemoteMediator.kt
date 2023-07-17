@@ -67,33 +67,38 @@ class LastFmRemoteMediator @Inject constructor(
                 userDao.getUserInfoByName(storedUsername)
             }
 
-            val res = api.getFriends(page = page, user = user?.name ?: "lastfm")
+            if (user != null) {
+                val res = api.getFriends(page = page, user = user?.name ?: "lastfm")
 
-            val response = res.friends
+                val response = res.friends
 
-            if (response.user.isNotEmpty()) {
-                database.withTransaction {
-                    if (loadType == LoadType.REFRESH) {
-                        friendDao.deleteAllFriends()
-                        friendRemoteKeysDao.deleteAllRemoteKeys()
+                if (response.user.isNotEmpty()) {
+                    database.withTransaction {
+                        if (loadType == LoadType.REFRESH) {
+                            friendDao.deleteAllFriends()
+                            friendRemoteKeysDao.deleteAllRemoteKeys()
+                        }
+
+                        val prevPage = if (response.attr.page > 1) response.attr.page - 1 else null
+                        val nextPage =
+                            if (response.attr.page < response.attr.totalPages) response.attr.page + 1 else null
+
+                        val keys = response.user.map {
+                            FriendRemoteKeys(
+                                name = it.name,
+                                prevPage = prevPage,
+                                nextPage = nextPage
+                            )
+                        }
+
+                        friendRemoteKeysDao.addAll(keys)
+                        friendDao.addFriends(response.user)
                     }
-
-                    val prevPage = if (response.attr.page > 1) response.attr.page - 1 else null
-                    val nextPage = if (response.attr.page < response.attr.totalPages) response.attr.page + 1 else null
-
-                    val keys = response.user.map {
-                        FriendRemoteKeys(
-                            name = it.name,
-                            prevPage = prevPage,
-                            nextPage = nextPage
-                        )
-                    }
-
-                    friendRemoteKeysDao.addAll(keys)
-                    friendDao.addFriends(response.user)
                 }
+                MediatorResult.Success(endOfPaginationReached = response.attr.page == response.attr.totalPages)
+            } else {
+                MediatorResult.Error(Exception("User not found"))
             }
-            MediatorResult.Success(endOfPaginationReached = response.attr.page == response.attr.totalPages)
         } catch (e: Exception) {
             return MediatorResult.Error(e)
         }
