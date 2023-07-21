@@ -8,7 +8,7 @@ import androidx.room.Query
 import com.frontmatic.scrobbleview.data.model.Friend
 
 @Dao
-interface FriendDao {
+interface FriendDao  {
     @Query("SELECT * FROM friends")
     fun getAllFriends(): PagingSource<Int, Friend>
 

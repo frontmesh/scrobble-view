@@ -17,6 +17,11 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.ContextCompat
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import com.frontmatic.scrobbleview.data.model.Friend
+import com.frontmatic.scrobbleview.ui.components.EmptyScreen
+import com.frontmatic.scrobbleview.ui.components.ShimmerEffect
 
 @Composable
 fun getThemedBackgroundModifier(): Modifier {
@@ -28,8 +33,6 @@ fun getThemedBackgroundModifier(): Modifier {
         )
     )
 }
-
-
 
 fun Context.sendMail(
     to: String,
@@ -59,4 +62,29 @@ fun Context.hasNotificationPermission(): Boolean {
     }
 
     return true
+}
+
+
+@Composable
+fun <T: Any> handlePagingResult(collection: LazyPagingItems<T>): Boolean {
+    collection.apply {
+        val error = when {
+            loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+            loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+            loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+            else -> null
+        }
+
+        return when {
+            loadState.refresh is LoadState.Loading -> {
+                ShimmerEffect()
+                false
+            }
+            error != null -> {
+                EmptyScreen(error = error)
+                false
+            }
+            else -> true
+        }
+    }
 }

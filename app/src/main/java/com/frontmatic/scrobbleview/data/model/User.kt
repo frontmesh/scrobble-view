@@ -31,7 +31,7 @@ data class User(
     @SerializedName("track_count")
     val trackCount: Int,
 
-//    val registered: Registered, // TODO create a database converter
+    val registered: Registered,
 
     val country: String,
     val gender: String,

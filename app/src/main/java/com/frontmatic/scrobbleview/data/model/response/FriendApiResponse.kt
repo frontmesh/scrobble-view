@@ -1,16 +1,8 @@
-package com.frontmatic.scrobbleview.data.model
+package com.frontmatic.scrobbleview.data.model.response
 
+import com.frontmatic.scrobbleview.data.model.Friend
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
-
-@Serializable
-data class Attr(
-    val user: String,
-    val page: Int,
-    val total: Int,
-    val perPage: Int,
-    val totalPages: Int,
-)
 
 @Serializable
 data class FriendApiResponse(

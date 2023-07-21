@@ -2,7 +2,9 @@ package com.frontmatic.scrobbleview.di
 
 import android.content.Context
 import com.frontmatic.scrobbleview.data.DeleteAllFriendsUseCase
+import com.frontmatic.scrobbleview.data.DeleteAllRecentTracksUseCase
 import com.frontmatic.scrobbleview.data.GetAllFriendsUseCase
+import com.frontmatic.scrobbleview.data.GetAllRecentTracksUseCase
 import com.frontmatic.scrobbleview.data.GetUserChangedUseCase
 import com.frontmatic.scrobbleview.data.GetUserInfoByNameUseCase
 import com.frontmatic.scrobbleview.data.GetUsernameUseCase
@@ -45,6 +47,8 @@ object RepositoryModule {
             deleteAllFriends = DeleteAllFriendsUseCase(repository),
             getUserChanged = GetUserChangedUseCase(repository),
             saveUserChanged = SaveUserChangedUseCase(repository),
+            getAllRecentTracks = GetAllRecentTracksUseCase(repository),
+            deleteAllRecentTracks = DeleteAllRecentTracksUseCase(repository)
         )
     }
 }

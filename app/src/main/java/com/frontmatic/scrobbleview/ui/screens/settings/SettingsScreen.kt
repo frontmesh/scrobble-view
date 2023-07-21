@@ -339,14 +339,14 @@ fun SettingsScreenMenu() {
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
-                headlineText = {
+                headlineContent = {
                     Text(
                         text = menuItem.title,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
-                supportingText = {
+                supportingContent = {
                     Text(
                         text = menuItem.description,
                         style = MaterialTheme.typography.bodySmall,

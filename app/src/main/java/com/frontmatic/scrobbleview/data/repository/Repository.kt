@@ -12,6 +12,10 @@ class Repository @Inject constructor(
 
     suspend fun deleteAllFriends() = localDataSource.deleteAllFriends()
 
+    fun getAllRecentTracks() = remote.getAllRecentTracks()
+
+    suspend fun deleteAllRecentTracks() = localDataSource.deleteAllRecentTracks()
+
     suspend fun getUserInfoByName(name: String) = localDataSource.getUserInfoByName(name)
 
     suspend fun saveUserInfo(user: User) {

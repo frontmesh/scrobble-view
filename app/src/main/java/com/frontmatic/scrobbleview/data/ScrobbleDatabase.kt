@@ -7,21 +7,29 @@ import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.dao.FriendDao
 import com.frontmatic.scrobbleview.data.model.FriendRemoteKeys
 import com.frontmatic.scrobbleview.data.dao.FriendRemoteKeysDao
+import com.frontmatic.scrobbleview.data.dao.RecentTrackDao
+import com.frontmatic.scrobbleview.data.dao.RecentTracksRemoteKeysDao
 import com.frontmatic.scrobbleview.data.dao.UserDao
+import com.frontmatic.scrobbleview.data.model.RecentTrack
+import com.frontmatic.scrobbleview.data.model.RecentTracksRemoteKeys
 import com.frontmatic.scrobbleview.data.model.User
 
 @Database(
     entities = [
         Friend::class,
         FriendRemoteKeys::class,
-        User::class
+        User::class,
+        RecentTrack::class,
+        RecentTracksRemoteKeys::class
    ],
-    version = 1
+    version = 2
 )
 @TypeConverters(DatabaseConverter::class)
 abstract class ScrobbleDatabase: RoomDatabase() {
     abstract fun friendDao(): FriendDao
     abstract fun friendRemoteKeysDao(): FriendRemoteKeysDao
-
     abstract fun userDao(): UserDao
+
+    abstract fun recentTrackDao(): RecentTrackDao
+    abstract fun recentTracksRemoteKeysDao(): RecentTracksRemoteKeysDao
 }

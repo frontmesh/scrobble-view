@@ -17,11 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import com.frontmatic.scrobbleview.ui.screens.NavGraphs
-import com.frontmatic.scrobbleview.ui.screens.appCurrentDestinationAsState
 import com.frontmatic.scrobbleview.ui.screens.destinations.ChartsScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.FriendsScreenDestination
 import com.frontmatic.scrobbleview.ui.screens.destinations.SettingsScreenDestination
-import com.frontmatic.scrobbleview.ui.screens.startAppDestination
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.navigation.popUpTo
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
@@ -60,9 +58,6 @@ val bottomNavItems = listOf(
 fun BottomNavBar(
     navController: NavController,
 ) {
-
-    val currentDestination = (navController.appCurrentDestinationAsState().value
-        ?: NavGraphs.root.startAppDestination)
 
     NavigationBar() {
         bottomNavItems.forEach { item ->

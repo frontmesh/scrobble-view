@@ -7,6 +7,7 @@ import com.frontmatic.scrobbleview.data.repository.LocalDataSource
 class LocalDataSourceImpl(database: ScrobbleDatabase): LocalDataSource {
     private val userDao = database.userDao()
     private val friendDao = database.friendDao()
+    private val recentTrackDao = database.recentTrackDao()
 
     override suspend fun getUserInfoByName(name: String): User? {
         return userDao.getUserInfoByName(name)
@@ -18,5 +19,9 @@ class LocalDataSourceImpl(database: ScrobbleDatabase): LocalDataSource {
 
     override suspend fun deleteAllFriends() {
         friendDao.deleteAllFriends()
+    }
+
+    override suspend fun deleteAllRecentTracks() {
+        recentTrackDao.deleteAll()
     }
 }

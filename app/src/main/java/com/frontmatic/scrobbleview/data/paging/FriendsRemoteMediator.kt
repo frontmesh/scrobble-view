@@ -1,21 +1,20 @@
-package com.frontmatic.scrobbleview.data
+package com.frontmatic.scrobbleview.data.paging
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.api.LastFMApi
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.FriendRemoteKeys
 import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @ExperimentalPagingApi
-class LastFmRemoteMediator @Inject constructor(
+class FriendsRemoteMediator @Inject constructor(
     private val api: LastFMApi,
     private val database: ScrobbleDatabase,
     private val dataStore: DataStoreOperations
@@ -68,7 +67,7 @@ class LastFmRemoteMediator @Inject constructor(
             }
 
             if (user != null) {
-                val res = api.getFriends(page = page, user = user?.name ?: "lastfm")
+                val res = api.getFriends(page = page, user = user.name)
 
                 val response = res.friends
 
@@ -127,5 +126,5 @@ class LastFmRemoteMediator @Inject constructor(
             friendRemoteKeysDao.getRemoteKeys(friend.name)
         }
     }
-
 }
+

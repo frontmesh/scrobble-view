@@ -2,6 +2,10 @@ package com.frontmatic.scrobbleview.data
 
 import androidx.room.TypeConverter
 import com.frontmatic.scrobbleview.data.model.Image
+import com.frontmatic.scrobbleview.data.model.Registered
+import com.frontmatic.scrobbleview.data.model.TrackAlbum
+import com.frontmatic.scrobbleview.data.model.TrackArtist
+import com.frontmatic.scrobbleview.data.model.TrackDate
 
 class DatabaseConverter {
 
@@ -33,6 +37,50 @@ class DatabaseConverter {
             val (size, url) = it.split(imageInnerSeparator)
             Image(size, url)
         }
+    }
+
+    @TypeConverter
+    fun convertArtisToString(artist: TrackArtist): String {
+        return "${artist.name}${imageInnerSeparator}${artist.mbid}"
+    }
+
+    @TypeConverter
+    fun convertStringToArtist(string: String): TrackArtist {
+        val (name, mbid) = string.split(imageInnerSeparator)
+        return TrackArtist(name, mbid)
+    }
+
+    @TypeConverter
+    fun convertAlbumToString(album: TrackAlbum): String {
+        return "${album.name}${imageInnerSeparator}${album.mbid}"
+    }
+
+    @TypeConverter
+    fun convertStringToAlbum(string: String): TrackAlbum {
+        val (name, mbid) = string.split(imageInnerSeparator)
+        return TrackAlbum(name, mbid)
+    }
+
+    @TypeConverter
+    fun convertDateToString(date: TrackDate): String {
+        return "${date.uts}${imageInnerSeparator}${date.text}"
+    }
+
+    @TypeConverter
+    fun convertStringToDate(string: String): TrackDate {
+        val (uts, text) = string.split(imageInnerSeparator)
+        return TrackDate(uts.toLong(), text)
+    }
+
+    @TypeConverter
+    fun convertRegisteredToString(registered: Registered): String {
+        return "${registered.unixtime}${imageInnerSeparator}${registered.text}"
+    }
+
+    @TypeConverter
+    fun convertStringToRegistered(string: String): Registered {
+        val (unixtime, text) = string.split(imageInnerSeparator)
+        return Registered(unixtime.toLong(), text)
     }
 
 }

@@ -161,6 +161,7 @@ fun TabTitle(
     title: String,
     position: Int,
     color: Color,
+    modifier: Modifier = Modifier,
     onClick: (Int) -> Unit
 ) {
     val changedColor by animateColorAsState(
@@ -169,7 +170,7 @@ fun TabTitle(
     )
     Text(
         text = title,
-        Modifier
+        modifier = modifier
             .wrapContentWidth(Alignment.CenterHorizontally)
             .padding(horizontal = 8.dp, vertical = 4.dp)
             .clickable(
