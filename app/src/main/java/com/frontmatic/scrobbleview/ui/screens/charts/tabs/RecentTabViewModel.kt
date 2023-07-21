@@ -1,5 +1,6 @@
 package com.frontmatic.scrobbleview.ui.screens.charts.tabs
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
 import com.frontmatic.scrobbleview.data.UseCases
@@ -13,4 +14,6 @@ class RecentTabViewModel @Inject constructor(
     private val useCases: UseCases,
 ): ViewModel() {
     val recentTracks: Flow<PagingData<RecentTrack>> = useCases.getAllRecentTracks()
+
+    val isRefreshing = mutableStateOf(false)
 }

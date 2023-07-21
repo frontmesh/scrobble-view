@@ -1,7 +1,17 @@
 package com.frontmatic.scrobbleview.data.model
 
+import android.util.Base64
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.Serializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Encoder
+import java.text.SimpleDateFormat
+import java.util.Date
 
 @Serializable
 data class Track(

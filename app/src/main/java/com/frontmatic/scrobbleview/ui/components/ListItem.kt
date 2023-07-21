@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,6 +36,7 @@ fun ListItem(
     @DrawableRes imagePlaceholder: Int,
     mainText: String,
     secondaryText: String,
+    trailingText: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -58,7 +60,7 @@ fun ListItem(
             }
             Column(
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxHeight()
+                modifier = Modifier.fillMaxWidth(if (trailingText != null) 0.75f else 1f)
             ) {
                 Text(
                     text = mainText,
@@ -72,6 +74,19 @@ fun ListItem(
                     modifier = Modifier.padding(start = 12.dp)
                 )
             }
+            if (trailingText != null) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.End,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        text = trailingText,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(end = 12.dp)
+                    )
+                }
+            }
         }
     }
     Spacer(modifier = Modifier.height(8.dp))
@@ -80,11 +95,12 @@ fun ListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun FriendItemPreview() {
+fun ListItemPreview() {
     ListItem(
-        mainText = "Jon",
-        secondaryText  = "Netherlands",
-        imageDescription = "Friend image",
+        mainText = "Modjo",
+        secondaryText  = "Chillin'",
+        trailingText = "12 hours ago",
+        imageDescription = "Modjo",
         imagePlaceholder = R.drawable.ic_headphones,
         imageUrl = "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png",
         onClick = {}

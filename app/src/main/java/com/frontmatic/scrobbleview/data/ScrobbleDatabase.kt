@@ -22,7 +22,7 @@ import com.frontmatic.scrobbleview.data.model.User
         RecentTrack::class,
         RecentTracksRemoteKeys::class
    ],
-    version = 2
+    version = 1
 )
 @TypeConverters(DatabaseConverter::class)
 abstract class ScrobbleDatabase: RoomDatabase() {
