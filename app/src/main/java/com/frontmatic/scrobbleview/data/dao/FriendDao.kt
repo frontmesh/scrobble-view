@@ -8,16 +8,16 @@ import androidx.room.Query
 import com.frontmatic.scrobbleview.data.model.Friend
 
 @Dao
-interface FriendDao  {
+interface FriendDao {
     @Query("SELECT * FROM friends")
-    fun getAllFriends(): PagingSource<Int, Friend>
+    fun getAll(): PagingSource<Int, Friend>
 
     @Query("SELECT * FROM friends WHERE name = :name")
-    fun getSelectedFriend(name: String): Friend
+    fun getByName(name: String): Friend
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addFriends(friends: List<Friend>)
+    fun addAll(friends: List<Friend>)
 
     @Query("DELETE FROM friends")
-    suspend fun deleteAllFriends()
+    suspend fun deleteAll()
 }

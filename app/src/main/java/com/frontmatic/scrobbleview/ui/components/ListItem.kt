@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -48,7 +49,10 @@ fun ListItem(
             .background(color = MaterialTheme.colorScheme.background)
             .clickable { onClick() }
     ) {
-        Row (modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row (
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Column(modifier = Modifier.fillMaxWidth(0.15f)) {
                 AsyncImage(
                     model = imageUrl,
@@ -83,7 +87,7 @@ fun ListItem(
                     Text(
                         text = trailingText,
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(end = 12.dp)
+                        textAlign = TextAlign.End
                     )
                 }
             }

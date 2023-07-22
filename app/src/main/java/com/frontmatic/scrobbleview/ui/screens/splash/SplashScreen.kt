@@ -63,14 +63,14 @@ fun SplashScreen(
     val alphaAnim by animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
         animationSpec = tween(
-            durationMillis = 1500,
+            durationMillis = 1000,
             delayMillis = 100,
         )
     )
 
     LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(1500)
+        delay(1000)
 
         val destination = if (usernameSet) {
             ChartsScreenDestination

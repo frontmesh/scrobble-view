@@ -25,7 +25,7 @@ class FriendsRemoteMediator @Inject constructor(
     override suspend fun initialize(): InitializeAction {
         val currentTime = System.currentTimeMillis()
         val lastUpdated = friendRemoteKeysDao.getFirstRemoteKey()?.lastUpdated ?: 0
-        val cacheTimeout = 5 // 5 minutes
+        val cacheTimeout = 60 * 24 // day in minutes
 
         val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
 
@@ -74,7 +74,7 @@ class FriendsRemoteMediator @Inject constructor(
                 if (response.user.isNotEmpty()) {
                     database.withTransaction {
                         if (loadType == LoadType.REFRESH) {
-                            friendDao.deleteAllFriends()
+                            friendDao.deleteAll()
                             friendRemoteKeysDao.deleteAllRemoteKeys()
                         }
 
@@ -91,7 +91,7 @@ class FriendsRemoteMediator @Inject constructor(
                         }
 
                         friendRemoteKeysDao.addAll(keys)
-                        friendDao.addFriends(response.user)
+                        friendDao.addAll(response.user)
                     }
                 }
                 MediatorResult.Success(endOfPaginationReached = response.attr.page == response.attr.totalPages)

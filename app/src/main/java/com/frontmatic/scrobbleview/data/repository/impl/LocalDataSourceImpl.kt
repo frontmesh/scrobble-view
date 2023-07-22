@@ -18,7 +18,7 @@ class LocalDataSourceImpl(database: ScrobbleDatabase): LocalDataSource {
     }
 
     override suspend fun deleteAllFriends() {
-        friendDao.deleteAllFriends()
+        friendDao.deleteAll()
     }
 
     override suspend fun deleteAllRecentTracks() {

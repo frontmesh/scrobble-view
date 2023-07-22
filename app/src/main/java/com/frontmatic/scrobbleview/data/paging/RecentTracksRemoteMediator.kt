@@ -26,7 +26,7 @@ class RecentTracksRemoteMediator @Inject constructor(
     override suspend fun initialize(): InitializeAction {
         val currentTime = System.currentTimeMillis()
         val lastUpdated = recentTracksRemoteKeysDao.getFirstRemoteKey()?.lastUpdated ?: 0
-        val cacheTimeout = 2 // 2 minutes
+        val cacheTimeout = 3 // minutes
 
         val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
 

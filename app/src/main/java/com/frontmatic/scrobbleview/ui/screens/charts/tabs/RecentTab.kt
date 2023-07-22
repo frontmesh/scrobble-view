@@ -82,6 +82,6 @@ fun Date.toRelativeTime(): String {
         hours < 24 -> "$hours hours ago"
         days < 2 -> "yesterday"
         days < 7 -> "$days days ago"
-        else -> SimpleDateFormat("yyyy-MM-dd").format(this) // For dates older than 1 week, format as yyyy-MM-dd
+        else -> SimpleDateFormat("dd-MM-yyyy").format(this) // For dates older than 1 week, format as yyyy-MM-dd
     }
 }

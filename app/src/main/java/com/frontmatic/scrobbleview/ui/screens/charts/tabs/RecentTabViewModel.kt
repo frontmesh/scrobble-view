@@ -14,6 +14,5 @@ class RecentTabViewModel @Inject constructor(
     private val useCases: UseCases,
 ): ViewModel() {
     val recentTracks: Flow<PagingData<RecentTrack>> = useCases.getAllRecentTracks()
-
     val isRefreshing = mutableStateOf(false)
 }

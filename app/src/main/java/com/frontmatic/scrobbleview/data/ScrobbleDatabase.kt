@@ -29,7 +29,6 @@ abstract class ScrobbleDatabase: RoomDatabase() {
     abstract fun friendDao(): FriendDao
     abstract fun friendRemoteKeysDao(): FriendRemoteKeysDao
     abstract fun userDao(): UserDao
-
     abstract fun recentTrackDao(): RecentTrackDao
     abstract fun recentTracksRemoteKeysDao(): RecentTracksRemoteKeysDao
 }

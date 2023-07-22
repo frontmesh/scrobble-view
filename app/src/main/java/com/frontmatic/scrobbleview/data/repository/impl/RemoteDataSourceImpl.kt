@@ -8,7 +8,6 @@ import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.api.LastFMApi
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.RecentTrack
-import com.frontmatic.scrobbleview.data.model.Track
 import com.frontmatic.scrobbleview.data.paging.FriendsRemoteMediator
 import com.frontmatic.scrobbleview.data.paging.RecentTracksRemoteMediator
 import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
@@ -29,7 +28,7 @@ class RemoteDataSourceImpl(
         return Pager(
             config = PagingConfig(pageSize = 50, initialLoadSize = 50 * 2, enablePlaceholders = true),
             remoteMediator = FriendsRemoteMediator(api, database, datastore),
-            pagingSourceFactory = { friendDao.getAllFriends() }
+            pagingSourceFactory = { friendDao.getAll() }
         ).flow
     }
 

@@ -1,5 +1,6 @@
 package com.frontmatic.scrobbleview.ui.screens.friends
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
 import com.frontmatic.scrobbleview.data.UseCases
@@ -14,4 +15,5 @@ class FriendsViewModel @Inject constructor(
     private val useCases: UseCases,
 ): ViewModel() {
     val friends: Flow<PagingData<Friend>> = useCases.getAllFriends()
+    val isRefreshing = mutableStateOf(false)
 }
