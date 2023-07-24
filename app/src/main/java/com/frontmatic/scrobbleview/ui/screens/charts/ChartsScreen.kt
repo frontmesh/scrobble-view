@@ -1,5 +1,6 @@
 package com.frontmatic.scrobbleview.ui.screens.charts
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -18,9 +19,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
-import com.frontmatic.scrobbleview.ui.components.Header
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import com.frontmatic.scrobbleview.ui.components.TabRow
 import com.frontmatic.scrobbleview.ui.components.TabTitle
 import com.frontmatic.scrobbleview.ui.screens.charts.tabs.RecentTab
@@ -29,9 +35,14 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 val tabs = listOf(
-    "Recent", "Seven Days", "One Month", "Three Months", "Six Months", "One Year", "Overall"
+    "Recent",
+    "Seven Days",
+    "One Month",
+    "Three Months",
+    "Six Months",
+    "One Year",
+    "Overall"
 )
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Destination(
@@ -43,10 +54,15 @@ fun ChartsScreen(
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
-    var scrollToPositions = remember { mutableStateListOf<Float>() }
+    val currentPage = pagerState.currentPage
 
-    LaunchedEffect(key1 = pagerState.currentPage) {
-        scrollState.animateScrollTo(scrollToPositions[pagerState.currentPage].roundToInt() - 16)
+    LaunchedEffect(key1 = currentPage) {
+
+        if (currentPage < 3) {
+            scrollState.animateScrollTo(0)
+        } else {
+            scrollState.animateScrollTo(1000)
+        }
     }
 
     Column(
@@ -59,17 +75,14 @@ fun ChartsScreen(
                 .horizontalScroll(scrollState)
         ) {
             TabRow(
-                selectedTabPosition = pagerState.currentPage
+                selectedTabPosition = currentPage
             ) {
-                tabs.forEachIndexed { index, text ->
+                tabs.forEachIndexed { index, tab ->
                     TabTitle(
-                        title = text,
+                        title = tab,
                         position = index,
-                        color = if (pagerState.currentPage == index)
+                        color = if (currentPage == index)
                             MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.onGloballyPositioned { coordinates ->
-                            scrollToPositions.add(coordinates.positionInRoot().x)
-                        }
                     ) {
                         scope.launch {
                             pagerState.animateScrollToPage(index)
@@ -92,7 +105,7 @@ fun TabContent(pagerState: PagerState) {
 
             when (pagerState.currentPage) {
                 0 -> RecentTab()
-    //            1 -> SevenDaysTab()
+//                1 -> SevenDaysTab()
     //            2 -> OneMonthTab()
     //            3 -> ThreeMonthsTab()
     //            4 -> SixMonthsTab()
