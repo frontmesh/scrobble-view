@@ -11,7 +11,7 @@ data class RecentTrack(
     val id: Int,
     val name: String,
     val url: String,
-    val date : TrackDate,
+    val date : TrackDate?,
     val artist: TrackArtist,
     val streamable: Int,
     val image: List<Image>,

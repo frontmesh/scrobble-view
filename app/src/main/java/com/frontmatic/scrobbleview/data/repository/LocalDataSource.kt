@@ -7,4 +7,6 @@ interface LocalDataSource {
     suspend fun saveUserInfo(user: User)
     suspend fun deleteAllFriends()
     suspend fun deleteAllRecentTracks()
+
+    suspend fun deleteAllTopTracks()
 }

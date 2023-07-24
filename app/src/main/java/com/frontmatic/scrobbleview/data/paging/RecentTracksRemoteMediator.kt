@@ -76,7 +76,7 @@ class RecentTracksRemoteMediator @Inject constructor(
                     database.withTransaction {
                         if (loadType == LoadType.REFRESH) {
                             recenTracksDao.deleteAll()
-                            recentTracksRemoteKeysDao.deleteAllRemoteKeys()
+                            recentTracksRemoteKeysDao.deleteAll()
                         }
 
                         val prevPage = if (response.attr.page > 1) response.attr.page - 1 else null
@@ -92,7 +92,7 @@ class RecentTracksRemoteMediator @Inject constructor(
                         }
 
                         recentTracksRemoteKeysDao.addAll(keys)
-                        recenTracksDao.addRecentTracks(response.track as MutableList<RecentTrack>)
+                        recenTracksDao.addAll(response.track as MutableList<RecentTrack>)
                     }
                 }
                 MediatorResult.Success(endOfPaginationReached = response.attr.page == response.attr.totalPages)

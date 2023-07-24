@@ -5,17 +5,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.frontmatic.scrobbleview.data.model.RecentTrack
+import com.frontmatic.scrobbleview.data.model.TopTrack
 
 @Dao
-interface RecentTrackDao {
-
-    @Query("SELECT * FROM recent_tracks")
-    fun getAll(): PagingSource<Int, RecentTrack>
-
+interface TopTrackDao {
+    @Query("SELECT * FROM top_tracks")
+    fun getAll(): PagingSource<Int, TopTrack>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addAll(recentTracks: List<RecentTrack>)
-
-    @Query("DELETE FROM recent_tracks")
+    fun addAll(friends: List<TopTrack>)
+    @Query("DELETE FROM top_tracks")
     fun deleteAll()
 }

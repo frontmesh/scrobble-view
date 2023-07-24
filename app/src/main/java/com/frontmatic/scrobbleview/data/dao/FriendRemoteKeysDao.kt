@@ -18,5 +18,5 @@ interface FriendRemoteKeysDao {
     suspend fun addAll(remoteKeys: List<FriendRemoteKeys>)
 
     @Query("DELETE FROM friend_remote_keys")
-    suspend fun deleteAllRemoteKeys()
+    suspend fun deleteAll()
 }

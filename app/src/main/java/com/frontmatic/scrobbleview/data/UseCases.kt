@@ -55,6 +55,17 @@ class DeleteAllRecentTracksUseCase(
     suspend operator fun invoke() = repository.deleteAllRecentTracks()
 }
 
+class GetAllTopTracksUseCase(
+    private val repository: Repository
+) {
+    operator fun invoke() = repository.getAllTopTracks()
+}
+
+class DeleteAllTopTracksUseCase(
+    private val repository: Repository
+) {
+    suspend operator fun invoke() = repository.deleteAllTopTracks()
+}
 
 class GetUserChangedUseCase(
     private val repository: Repository
@@ -79,4 +90,6 @@ data class UseCases(
     val saveUserChanged: SaveUserChangedUseCase,
     val getAllRecentTracks: GetAllRecentTracksUseCase,
     val deleteAllRecentTracks: DeleteAllRecentTracksUseCase,
+    val getAllTopTracks: GetAllTopTracksUseCase,
+    val deleteAllTopTracks: DeleteAllTopTracksUseCase,
 )

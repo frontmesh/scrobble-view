@@ -8,8 +8,10 @@ import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.api.LastFMApi
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.RecentTrack
+import com.frontmatic.scrobbleview.data.model.TopTrack
 import com.frontmatic.scrobbleview.data.paging.FriendsRemoteMediator
 import com.frontmatic.scrobbleview.data.paging.RecentTracksRemoteMediator
+import com.frontmatic.scrobbleview.data.paging.TopTracksRemoteMediator
 import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
 import com.frontmatic.scrobbleview.data.repository.RemoteDataSource
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +25,7 @@ class RemoteDataSourceImpl(
 ): RemoteDataSource {
     private val friendDao = database.friendDao()
     private val recentTrackDao = database.recentTrackDao()
+    private val topTrackDao = database.topTrackDao()
 
     override fun getAllFriends(): Flow<PagingData<Friend>> {
         return Pager(
@@ -32,12 +35,19 @@ class RemoteDataSourceImpl(
         ).flow
     }
 
-
     override fun getAllRecentTracks(): Flow<PagingData<RecentTrack>> {
         return Pager(
             config = PagingConfig(pageSize = 50, initialLoadSize = 50 * 2, enablePlaceholders = true),
             remoteMediator = RecentTracksRemoteMediator(api, database, datastore),
-            pagingSourceFactory = { recentTrackDao.getAllRecentTracks() }
+            pagingSourceFactory = { recentTrackDao.getAll() }
+        ).flow
+    }
+
+    override fun getAllTopTracks(): Flow<PagingData<TopTrack>> {
+        return Pager(
+            config = PagingConfig(pageSize = 50, initialLoadSize = 50 * 2, enablePlaceholders = true),
+            remoteMediator = TopTracksRemoteMediator(api, database, datastore),
+            pagingSourceFactory = { topTrackDao.getAll() }
         ).flow
     }
 

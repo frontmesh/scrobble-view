@@ -9,9 +9,13 @@ import com.frontmatic.scrobbleview.data.model.FriendRemoteKeys
 import com.frontmatic.scrobbleview.data.dao.FriendRemoteKeysDao
 import com.frontmatic.scrobbleview.data.dao.RecentTrackDao
 import com.frontmatic.scrobbleview.data.dao.RecentTracksRemoteKeysDao
+import com.frontmatic.scrobbleview.data.dao.TopTrackDao
+import com.frontmatic.scrobbleview.data.dao.TopTracksRemoteKeysDao
 import com.frontmatic.scrobbleview.data.dao.UserDao
 import com.frontmatic.scrobbleview.data.model.RecentTrack
 import com.frontmatic.scrobbleview.data.model.RecentTracksRemoteKeys
+import com.frontmatic.scrobbleview.data.model.TopTrack
+import com.frontmatic.scrobbleview.data.model.TopTracksRemoteKeys
 import com.frontmatic.scrobbleview.data.model.User
 
 @Database(
@@ -20,7 +24,9 @@ import com.frontmatic.scrobbleview.data.model.User
         FriendRemoteKeys::class,
         User::class,
         RecentTrack::class,
-        RecentTracksRemoteKeys::class
+        RecentTracksRemoteKeys::class,
+        TopTrack::class,
+        TopTracksRemoteKeys::class
    ],
     version = 1
 )
@@ -31,4 +37,7 @@ abstract class ScrobbleDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun recentTrackDao(): RecentTrackDao
     abstract fun recentTracksRemoteKeysDao(): RecentTracksRemoteKeysDao
+
+    abstract fun topTrackDao(): TopTrackDao
+    abstract fun topTracksRemoteKeysDao(): TopTracksRemoteKeysDao
 }

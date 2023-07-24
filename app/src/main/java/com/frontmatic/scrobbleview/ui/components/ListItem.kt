@@ -38,6 +38,7 @@ fun ListItem(
     mainText: String,
     secondaryText: String,
     trailingText: String? = null,
+    trailingTextBold : Boolean = false,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -87,6 +88,7 @@ fun ListItem(
                     Text(
                         text = trailingText,
                         style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = if (trailingTextBold) FontWeight.Bold else FontWeight.Normal,
                         textAlign = TextAlign.End
                     )
                 }

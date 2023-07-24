@@ -14,6 +14,10 @@ class Repository @Inject constructor(
 
     fun getAllRecentTracks() = remote.getAllRecentTracks()
 
+    fun getAllTopTracks() = remote.getAllTopTracks()
+
+    suspend fun deleteAllTopTracks() = localDataSource.deleteAllTopTracks()
+
     suspend fun deleteAllRecentTracks() = localDataSource.deleteAllRecentTracks()
 
     suspend fun getUserInfoByName(name: String) = localDataSource.getUserInfoByName(name)

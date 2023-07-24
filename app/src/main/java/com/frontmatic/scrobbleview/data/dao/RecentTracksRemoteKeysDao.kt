@@ -18,5 +18,5 @@ interface RecentTracksRemoteKeysDao {
     suspend fun addAll(remoteKeys: List<RecentTracksRemoteKeys>)
 
     @Query("DELETE FROM recent_tracks_remote_keys")
-    suspend fun deleteAllRemoteKeys()
+    suspend fun deleteAll()
 }

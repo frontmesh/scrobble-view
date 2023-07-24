@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.frontmatic.scrobbleview.ui.components.TabRow
 import com.frontmatic.scrobbleview.ui.components.TabTitle
 import com.frontmatic.scrobbleview.ui.screens.charts.tabs.RecentTab
+import com.frontmatic.scrobbleview.ui.screens.charts.tabs.SevenDaysTab
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -59,9 +60,9 @@ fun ChartsScreen(
     LaunchedEffect(key1 = currentPage) {
 
         if (currentPage < 3) {
-            scrollState.animateScrollTo(0)
+            scrollState.scrollTo(0)
         } else {
-            scrollState.animateScrollTo(1000)
+            scrollState.scrollTo(1000)
         }
     }
 
@@ -105,7 +106,7 @@ fun TabContent(pagerState: PagerState) {
 
             when (pagerState.currentPage) {
                 0 -> RecentTab()
-//                1 -> SevenDaysTab()
+                1 -> SevenDaysTab()
     //            2 -> OneMonthTab()
     //            3 -> ThreeMonthsTab()
     //            4 -> SixMonthsTab()

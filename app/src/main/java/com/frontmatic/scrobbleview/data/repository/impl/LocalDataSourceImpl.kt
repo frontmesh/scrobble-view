@@ -8,6 +8,7 @@ class LocalDataSourceImpl(database: ScrobbleDatabase): LocalDataSource {
     private val userDao = database.userDao()
     private val friendDao = database.friendDao()
     private val recentTrackDao = database.recentTrackDao()
+    private val topTrackDao = database.topTrackDao()
 
     override suspend fun getUserInfoByName(name: String): User? {
         return userDao.getUserInfoByName(name)
@@ -23,5 +24,9 @@ class LocalDataSourceImpl(database: ScrobbleDatabase): LocalDataSource {
 
     override suspend fun deleteAllRecentTracks() {
         recentTrackDao.deleteAll()
+    }
+
+    override suspend fun deleteAllTopTracks() {
+        topTrackDao.deleteAll()
     }
 }
