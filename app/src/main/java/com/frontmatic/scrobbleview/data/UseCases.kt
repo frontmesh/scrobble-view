@@ -1,5 +1,6 @@
 package com.frontmatic.scrobbleview.data
 
+import com.frontmatic.scrobbleview.data.api.RequestPeriod
 import com.frontmatic.scrobbleview.data.model.User
 import com.frontmatic.scrobbleview.data.repository.Repository
 
@@ -58,7 +59,7 @@ class DeleteAllRecentTracksUseCase(
 class GetAllTopTracksUseCase(
     private val repository: Repository
 ) {
-    operator fun invoke() = repository.getAllTopTracks()
+    operator fun invoke(period: RequestPeriod) = repository.getAllTopTracks(period)
 }
 
 class DeleteAllTopTracksUseCase(

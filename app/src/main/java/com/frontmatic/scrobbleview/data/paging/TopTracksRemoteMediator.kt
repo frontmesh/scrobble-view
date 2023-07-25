@@ -18,7 +18,8 @@ import javax.inject.Inject
 class TopTracksRemoteMediator  @Inject constructor(
     private val api: LastFMApi,
     private val database: ScrobbleDatabase,
-    private val dataStore: DataStoreOperations
+    private val dataStore: DataStoreOperations,
+    private val period: RequestPeriod
 ): RemoteMediator<Int, TopTrack>() {
     private val userDao = database.userDao()
     private val topTrackDao = database.topTrackDao()
@@ -26,7 +27,7 @@ class TopTracksRemoteMediator  @Inject constructor(
 
     override suspend fun initialize(): InitializeAction {
         val currentTime = System.currentTimeMillis()
-        val lastUpdated = topTracksRemoteKeysDao.getFirstRemoteKey()?.lastUpdated ?: 0
+        val lastUpdated = topTracksRemoteKeysDao.getFirstRemoteKeyByPeriod(period)?.lastUpdated ?: 0
         val cacheTimeout = 1 * 60 * 24 * 7 // 7 days in minutes
 
         val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
@@ -73,24 +74,31 @@ class TopTracksRemoteMediator  @Inject constructor(
 
 
             if (user != null) {
-                val res = api.getTopTracks(page = page, user = user.name, period = RequestPeriod.SEVEN_DAY)
+                val res = api.getTopTracks(page = page, user = user.name, period = period)
                 val response = res.toptracks
 
                 if (response.track.isNotEmpty()) {
                     database.withTransaction {
                         if (loadType == LoadType.REFRESH) {
-                            topTracksRemoteKeysDao.deleteAll()
-                            topTrackDao.deleteAll()
+                            topTracksRemoteKeysDao.deleteAllByPeriod(period)
+                            topTrackDao.deleteAllByPeriod(period)
                         }
 
                         val prevPage = if (response.attr.page > 1) response.attr.page - 1 else null
                         val nextPage =
                             if (response.attr.page < response.attr.totalPages) response.attr.page + 1 else null
                         val keys = response.track.map {
-                            TopTracksRemoteKeys(name = it.name, prevPage = prevPage, nextPage = nextPage)
+                            TopTracksRemoteKeys(
+                                name = it.name,
+                                period = period,
+                                prevPage = prevPage,
+                                nextPage = nextPage,
+                            )
                         }
                         topTracksRemoteKeysDao.addAll(keys)
-                        topTrackDao.addAll(response.track)
+                        topTrackDao.addAll(response.track.map { track ->
+                            track.copy(period = period)
+                        })
                     }
                     MediatorResult.Success(endOfPaginationReached = response.attr.page == response.attr.totalPages)
                 } else {
@@ -107,7 +115,7 @@ class TopTracksRemoteMediator  @Inject constructor(
         private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, TopTrack>): TopTracksRemoteKeys? {
             return state.anchorPosition?.let { position ->
                 state.closestItemToPosition(position)?.name?.let { name ->
-                    topTracksRemoteKeysDao.getRemoteKeys(name)
+                    topTracksRemoteKeysDao.getRemoteKeysByPeriod(name, period)
                 }
             }
         }
@@ -116,7 +124,7 @@ class TopTracksRemoteMediator  @Inject constructor(
             return state.pages.firstOrNull {
                 it.data.isNotEmpty()
             }?.data?.firstOrNull()?.let { track ->
-                topTracksRemoteKeysDao.getRemoteKeys(track.name)
+                topTracksRemoteKeysDao.getRemoteKeysByPeriod(track.name, period)
             }
         }
 
@@ -124,7 +132,7 @@ class TopTracksRemoteMediator  @Inject constructor(
             return state.pages.lastOrNull {
                 it.data.isNotEmpty()
             }?.data?.lastOrNull()?.let { track ->
-                topTracksRemoteKeysDao.getRemoteKeys(track.name)
+                topTracksRemoteKeysDao.getRemoteKeysByPeriod(track.name, period)
             }
         }
 }

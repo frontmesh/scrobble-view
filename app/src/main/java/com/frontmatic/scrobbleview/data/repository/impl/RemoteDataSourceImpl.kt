@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.api.LastFMApi
+import com.frontmatic.scrobbleview.data.api.RequestPeriod
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.RecentTrack
 import com.frontmatic.scrobbleview.data.model.TopTrack
@@ -43,11 +44,11 @@ class RemoteDataSourceImpl(
         ).flow
     }
 
-    override fun getAllTopTracks(): Flow<PagingData<TopTrack>> {
+    override fun getAllTopTracks(period: RequestPeriod): Flow<PagingData<TopTrack>> {
         return Pager(
             config = PagingConfig(pageSize = 50, initialLoadSize = 50 * 2, enablePlaceholders = true),
-            remoteMediator = TopTracksRemoteMediator(api, database, datastore),
-            pagingSourceFactory = { topTrackDao.getAll() }
+            remoteMediator = TopTracksRemoteMediator(api, database, datastore, period),
+            pagingSourceFactory = { topTrackDao.getAllByPeriod(period = period) }
         ).flow
     }
 

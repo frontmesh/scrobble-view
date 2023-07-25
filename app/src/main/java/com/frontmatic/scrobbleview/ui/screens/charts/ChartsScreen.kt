@@ -1,6 +1,5 @@
 package com.frontmatic.scrobbleview.ui.screens.charts
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -15,25 +14,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.layout.positionInWindow
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.frontmatic.scrobbleview.data.api.RequestPeriod
 import com.frontmatic.scrobbleview.ui.components.TabRow
 import com.frontmatic.scrobbleview.ui.components.TabTitle
 import com.frontmatic.scrobbleview.ui.screens.charts.tabs.RecentTab
-import com.frontmatic.scrobbleview.ui.screens.charts.tabs.SevenDaysTab
+import com.frontmatic.scrobbleview.ui.screens.charts.tabs.TopTrackTab
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 val tabs = listOf(
     "Recent",
@@ -51,6 +41,7 @@ val tabs = listOf(
 )
 @Composable
 fun ChartsScreen(
+    chartViewModel: ChartViewModel = hiltViewModel()
 ) {
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
@@ -86,32 +77,47 @@ fun ChartsScreen(
                             MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary,
                     ) {
                         scope.launch {
-                            pagerState.animateScrollToPage(index)
+                            pagerState.scrollToPage(index)
                         }
                     }
                 }
             }
         }
-
-        TabContent(pagerState = pagerState)
+        TabContent(pagerState = pagerState, viewModel = chartViewModel)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TabContent(pagerState: PagerState) {
+fun TabContent(pagerState: PagerState, viewModel: ChartViewModel) {
     HorizontalPager(pageCount = tabs.size, state = pagerState) { page ->
         Column {
-//            Header(text = tabs[pagerState.currentPage])
-
-            when (pagerState.currentPage) {
+            when (page) {
                 0 -> RecentTab()
-                1 -> SevenDaysTab()
-    //            2 -> OneMonthTab()
-    //            3 -> ThreeMonthsTab()
-    //            4 -> SixMonthsTab()
-    //            5 -> OneYearTab()
-    //            6 -> OverallTab()
+                1 -> TopTrackTab(
+                    tracks = viewModel.sevenDaysTopTracks,
+                    isRefreshing = viewModel.isSevenDayTabRefreshing.value
+                )
+                2 -> TopTrackTab(
+                    tracks = viewModel.oneMonthTopTracks,
+                    isRefreshing = viewModel.isOneMonthTabRefreshing.value
+                )
+                3 -> TopTrackTab(
+                    tracks = viewModel.threeMonthsTopTracks,
+                    isRefreshing = viewModel.isThreeMonthTabRefreshing.value
+                )
+                4 -> TopTrackTab(
+                    tracks = viewModel.sixMonthsTopTracks,
+                    isRefreshing = viewModel.isSixMonthTabRefreshing.value
+                )
+                5 -> TopTrackTab(
+                    tracks = viewModel.twelveMonthsTopTracks,
+                    isRefreshing = viewModel.isTwelveMonthTabRefreshing.value
+                )
+                6 -> TopTrackTab(
+                    tracks = viewModel.overallTopTracks,
+                    isRefreshing = viewModel.isOverallTabRefreshing.value
+                )
             }
         }
     }

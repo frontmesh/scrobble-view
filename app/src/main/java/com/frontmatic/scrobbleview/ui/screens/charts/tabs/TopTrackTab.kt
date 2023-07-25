@@ -9,27 +9,33 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.frontmatic.scrobbleview.R
+import com.frontmatic.scrobbleview.data.api.RequestPeriod
+import com.frontmatic.scrobbleview.data.model.TopTrack
 import com.frontmatic.scrobbleview.ui.components.ListItem
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 import com.frontmatic.scrobbleview.util.handlePagingResult
+import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SevenDaysTab(
-    sevenDaysTabViewModel: SevenDaysTabViewModel = hiltViewModel(),
+fun TopTrackTab(
+    tracks: Flow<PagingData<TopTrack>>,
+    isRefreshing: Boolean,
 ) {
 
-    val topTracks = sevenDaysTabViewModel.topTracks.collectAsLazyPagingItems()
-    val refreshing by sevenDaysTabViewModel.isRefreshing
+    val topTracks = tracks.collectAsLazyPagingItems()
+//    val refreshing by topTrackTabViewModel.isRefreshing
     val result = handlePagingResult(collection = topTracks)
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = refreshing,
+        refreshing = isRefreshing,
         onRefresh = {
             topTracks.refresh()
         }
@@ -53,7 +59,7 @@ fun SevenDaysTab(
                         onClick = { /*TODO*/ })
                 }
             }
-            PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
+            PullRefreshIndicator(isRefreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
         }
     }
 }
