@@ -32,7 +32,6 @@ fun TopTrackTab(
 ) {
 
     val topTracks = tracks.collectAsLazyPagingItems()
-//    val refreshing by topTrackTabViewModel.isRefreshing
     val result = handlePagingResult(collection = topTracks)
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
