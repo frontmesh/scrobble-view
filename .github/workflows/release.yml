@@ -17,6 +17,11 @@ jobs:
       with:
         java-version: 17
 
+    - name: Set environment variables
+      run: |
+        echo "API_KEY=${{ secrets.API_KEY }}" > ./secrets.properties
+        echo "FEEDBACK_EMAIL=${{ secrets.FEEDBACK_EMAIL }}" >> ./secrets.properties
+
     - name: Build with Gradle
       run: ./gradlew assembleRelease
 
@@ -35,11 +40,6 @@ jobs:
           - Action: ${{ github.action }}
         draft: false
         prerelease: false
-
-    - name: Set environment variables
-      run: |
-        echo "API_KEY=${{ secrets.API_KEY }}" > ./secrets.properties
-        echo "FEEDBACK_EMAIL=${{ secrets.FEEDBACK_EMAIL }}" >> ./secrets.properties
 
     - name: Upload APK
       id: upload-release-asset
