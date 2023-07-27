@@ -19,8 +19,8 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "API_KEY=${{ secrets.API_KEY }}" > ./secrets.properties
-        echo "FEEDBACK_EMAIL=${{ secrets.FEEDBACK_EMAIL }}" >> ./secrets.properties
+        echo "API_KEY=\"${{ secrets.API_KEY }}\"" > ./secrets.properties
+        echo "FEEDBACK_EMAIL=\"${{ secrets.FEEDBACK_EMAIL }}\"" >> ./secrets.properties
 
     - name: Build with Gradle
       run: ./gradlew assembleRelease
