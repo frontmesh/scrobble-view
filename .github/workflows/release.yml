@@ -27,6 +27,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
         API_KEY: ${{ secrets.API_KEY }}
         FEEDBACK_EMAIL: ${{ secrets.FEEDBACK_EMAIL }}
+      run: echo API_KEY=\"$API_KEY\" > ./secrets.properties && echo FEEDBACK_EMAIL=\"$FEEDBACK_EMAIL\" >> ./secrets.properties
       with:
         tag_name: ${{ github.sha }}
         release_name: Release ${{ github.sha }}
