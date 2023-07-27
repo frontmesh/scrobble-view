@@ -25,6 +25,8 @@ jobs:
       uses: actions/create-release@v1
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        API_KEY: ${{ secrets.API_KEY }}
+        FEEDBACK_EMAIL: ${{ secrets.FEEDBACK_EMAIL }}
       with:
         tag_name: ${{ github.sha }}
         release_name: Release ${{ github.sha }}
@@ -38,6 +40,8 @@ jobs:
       uses: actions/upload-release-asset@v1
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        API_KEY: ${{ secrets.API_KEY }}
+        FEEDBACK_EMAIL: ${{ secrets.FEEDBACK_EMAIL }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: app/build/outputs/apk/release/app-release.apk
