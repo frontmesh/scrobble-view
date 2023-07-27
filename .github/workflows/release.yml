@@ -27,19 +27,24 @@ jobs:
 
     - name: Create release
       id: create_release
-      if: github.event_name == 'push'
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        tag_name: ${{ github.sha }}
-        release_name: Release ${{ github.sha }}
-        body: |
-          Automatic release of APK for commit ${{ github.sha }}
-          - Workflow: ${{ github.workflow }}
-          - Action: ${{ github.action }}
-        draft: false
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
+        release_name: Release ${{ github.sha }}
+#      if: github.event_name == 'push'
+#      uses: actions/create-release@v1gg
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        tag_name: ${{ github.sha }}
+#        release_name: Release ${{ github.sha }}
+#        body: |
+#          Automatic release of APK for commit ${{ github.sha }}
+#          - Workflow: ${{ github.workflow }}
+#          - Action: ${{ github.action }}
+#        draft: false
+#        prerelease: false
 
     - name: Upload APK
       id: upload-release-asset
