@@ -28,6 +28,7 @@ jobs:
     - name: Create release
       id: create_release
       uses: "marvinpinto/action-automatic-releases@latest"
+      permissions: write-all
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
