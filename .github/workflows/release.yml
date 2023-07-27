@@ -24,10 +24,8 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
         API_KEY: ${{ secrets.API_KEY }}
         FEEDBACK_EMAIL: ${{ secrets.FEEDBACK_EMAIL }}
-      run: echo API_KEY=\"$API_KEY\" > ./secrets.properties && echo FEEDBACK_EMAIL=\"$FEEDBACK_EMAIL\" >> ./secrets.properties
       with:
         tag_name: ${{ github.sha }}
         release_name: Release ${{ github.sha }}
@@ -35,6 +33,13 @@ jobs:
           Automatic release of APK for commit ${{ github.sha }}
           - Workflow: ${{ github.workflow }}
           - Action: ${{ github.action }}
+        draft: false
+        prerelease: false
+
+    - name: Set environment variables
+      run: |
+        echo "API_KEY=${{ secrets.API_KEY }}" > ./secrets.properties
+        echo "FEEDBACK_EMAIL=${{ secrets.FEEDBACK_EMAIL }}" >> ./secrets.properties
 
     - name: Upload APK
       id: upload-release-asset
