@@ -1,0 +1,47 @@
+name: Release APK
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Build with Gradle
+      run: ./gradlew assembleRelease
+
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.sha }}
+        body: |
+          Automatic release of APK for commit ${{ github.sha }}
+          - Workflow: ${{ github.workflow }}
+          - Action: ${{ github.action }}
+
+    - name: Upload APK
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: app/build/outputs/apk/release/app-release.apk
+        asset_name: app-release.apk
+        asset_content_type: application/vnd.android.package-archive
+
+
