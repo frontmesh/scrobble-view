@@ -35,7 +35,7 @@ jobs:
         automatic_release_tag: "latest"
         title: Release ${{ github.sha }}
         files: |
-          app/build/outputs/apk/release/app-release.apk
+          *.apk
 #      if: github.event_name == 'push'
 #      uses: actions/create-release@v1gg
 #      env:
