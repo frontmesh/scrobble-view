@@ -26,6 +26,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleRelease
 
+    - name: List APK Directory
+      run: ls -R app/build/outputs/apk/release/
+
     - name: Create release
       id: create_release
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -34,8 +37,8 @@ jobs:
         prerelease: false
         automatic_release_tag: "latest"
         title: Release ${{ github.sha }}
-        files: |
-          *.apk
+#        files: |
+#          *.apk
 #      if: github.event_name == 'push'
 #      uses: actions/create-release@v1gg
 #      env:
