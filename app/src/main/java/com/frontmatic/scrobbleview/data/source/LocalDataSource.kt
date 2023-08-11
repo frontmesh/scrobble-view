@@ -1,4 +1,4 @@
-package com.frontmatic.scrobbleview.data.repository
+package com.frontmatic.scrobbleview.data.source
 
 import com.frontmatic.scrobbleview.data.model.User
 

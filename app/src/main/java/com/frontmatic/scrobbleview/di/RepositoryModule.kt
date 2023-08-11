@@ -14,9 +14,9 @@ import com.frontmatic.scrobbleview.data.SaveUserChangedUseCase
 import com.frontmatic.scrobbleview.data.SaveUserInfoUseCase
 import com.frontmatic.scrobbleview.data.SaveUsernameUseCase
 import com.frontmatic.scrobbleview.data.UseCases
-import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
+import com.frontmatic.scrobbleview.data.source.DataStoreOperations
 import com.frontmatic.scrobbleview.data.repository.Repository
-import com.frontmatic.scrobbleview.data.repository.impl.DataStoreOperationsImpl
+import com.frontmatic.scrobbleview.data.source.impl.DataStoreOperationsImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

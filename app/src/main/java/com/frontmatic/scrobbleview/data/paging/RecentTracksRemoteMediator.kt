@@ -9,7 +9,7 @@ import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.api.LastFMApi
 import com.frontmatic.scrobbleview.data.model.RecentTrack
 import com.frontmatic.scrobbleview.data.model.RecentTracksRemoteKeys
-import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
+import com.frontmatic.scrobbleview.data.source.DataStoreOperations
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
