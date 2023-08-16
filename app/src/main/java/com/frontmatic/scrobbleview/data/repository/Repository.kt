@@ -1,7 +1,5 @@
 package com.frontmatic.scrobbleview.data.repository
 
-import com.dropbox.android.external.store4.Fetcher
-import com.dropbox.android.external.store4.StoreBuilder
 import com.frontmatic.scrobbleview.data.api.RequestPeriod
 import com.frontmatic.scrobbleview.data.model.User
 import com.frontmatic.scrobbleview.data.source.DataStoreOperations

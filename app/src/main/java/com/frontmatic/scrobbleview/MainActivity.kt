@@ -1,14 +1,11 @@
 package com.frontmatic.scrobbleview
 
-//import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -32,8 +29,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
-        ExperimentalMaterialNavigationApi::class, ExperimentalMaterialApi::class
+    @OptIn(
+        ExperimentalAnimationApi::class,
+        ExperimentalMaterialNavigationApi::class,
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +39,15 @@ class MainActivity : ComponentActivity() {
             val engine = rememberAnimatedNavHostEngine()
             val navController = engine.rememberNavController()
             val bottomSheetNavigator = rememberBottomSheetNavigator()
-//            val sheetState = rememberModalBottomSheetState()
-//            val bottomSheetNavigator = remember { BottomSheetNavigator() }
             navController.navigatorProvider += bottomSheetNavigator
             val startRoute = NavGraphs.root.startRoute
 
             ScrobbleViewTheme {
                 // A surface container using the 'background' color from the theme
+                ModalBottomSheetLayout(
+                    bottomSheetNavigator = bottomSheetNavigator,
+                    sheetShape = RoundedCornerShape(16.dp),
+                ) {
                 RootScaffold(
                     navController = navController,
                     startRoute = startRoute,
@@ -68,11 +68,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 )
                     {
-
-                        ModalBottomSheetLayout(
-                            bottomSheetNavigator = bottomSheetNavigator,
-                            sheetShape = RoundedCornerShape(16.dp),
-                        ) {
                             DestinationsNavHost(
                                 navController = navController,
                                 engine = engine,

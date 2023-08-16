@@ -66,7 +66,7 @@ interface LastFMApi {
     @GET(".")
     suspend fun getTrackInfo(
         @Query("method") method: String = "track.getInfo",
-        @Query("mbid") mbid: String,
+        @Query("mbid") mbid: String?,
         @Query("username") user: String?,
         @Query("artist") artist: String?,
         @Query("track") track: String?,

@@ -17,11 +17,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.frontmatic.scrobbleview.R
 import com.frontmatic.scrobbleview.ui.components.ListItem
-import com.frontmatic.scrobbleview.ui.screens.destinations.TrackDetailScreenDestination
-import com.frontmatic.scrobbleview.ui.screens.track.TrackDetailScreen
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 import com.frontmatic.scrobbleview.util.handlePagingResult
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.frontmatic.scrobbleview.ui.screens.destinations.TrackDetailScreenDestination
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -60,7 +59,12 @@ fun RecentTab(
                         trailingText = if (track.date != null) fromSecondsSinceEpoch(track.date.uts) else "Now playing",
                         trailingTextBold = track.date == null,
                         onClick = {
-                            navigator.navigate(TrackDetailScreenDestination(track.mbid))
+                            navigator.navigate(
+                                TrackDetailScreenDestination(
+                                    track.artist.name,
+                                    track.name,
+                                )
+                            )
                         })
                 }
             }

@@ -82,7 +82,7 @@ dependencies {
     def paging_version = "3.1.1"
 
 //    def destinations_version = "1.7.21-beta"
-    def destinations_version = "1.9.41-beta"
+    def destinations_version = "1.9.51"
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
@@ -118,10 +118,7 @@ dependencies {
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.47"
     kapt 'com.google.dagger:hilt-compiler:2.47'
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.47'
-//    kapt "com.google.dagger:hilt-android-compiler:2.44"
-//    kapt "com.google.dagger:hilt-android-compiler:2.47"
-//    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    kapt "com.google.dagger:hilt-android-compiler:2.47"
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
@@ -142,7 +139,10 @@ dependencies {
     ksp "io.github.raamcosta.compose-destinations:ksp:$destinations_version"
 
     // Dropbox studio
-    implementation "com.dropbox.mobile.store:store4:4.0.0-beta01"
+
+//    implementation "com.dropbox.mobile.store:store4:4.0.0-beta01"
+    implementation "org.mobilenativefoundation.store:store5:5.0.0-beta03"
+    implementation "org.jetbrains.kotlinx:atomicfu:0.18.5"
 
 //    def accompanist_version = "0.21.0"
 //    // Swipe Refresh - Accompanist

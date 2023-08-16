@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerDefaults
+import androidx.compose.foundation.pager.PagerScope
 //import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -54,7 +55,9 @@ fun ChartsScreen(
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
-    )
+    ) {
+        tabs.size
+    }
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val currentPage = pagerState.currentPage
@@ -111,8 +114,17 @@ fun TabContent(
 ) {
     HorizontalPager(
         modifier = Modifier,
-        pageCount = tabs.size,
         state = pagerState,
+        pageSpacing = 0.dp,
+        userScrollEnabled = true,
+        reverseLayout = false,
+        contentPadding = PaddingValues(0.dp),
+        beyondBoundsPageCount = 0,
+        pageSize = PageSize.Fill,
+        key = null,
+        pageNestedScrollConnection = PagerDefaults.pageNestedScrollConnection(
+            Orientation.Horizontal
+        ),
     ) {
             Column {
                 when (it) {
@@ -163,4 +175,5 @@ fun TabContent(
                 }
             }
         }
+
 }
