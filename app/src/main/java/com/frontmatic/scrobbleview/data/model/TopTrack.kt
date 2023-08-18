@@ -21,7 +21,7 @@ data class TopTrack(
 
     val period: RequestPeriod,
 
-    val artist: TopTrackArtist
+    val artist: Artist
 ) {
     val durationString: String
         @RequiresApi(Build.VERSION_CODES.O)
@@ -35,8 +35,8 @@ data class TopTrack(
 }
 
 
-data class TopTrackArtist(
-    val name: String,
-    val mbid: String,
-    val url: String
-)
+//data class TopTrackArtist(
+//    val name: String,
+//    val mbid: String,
+//    val url: String
+//)

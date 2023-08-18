@@ -1,13 +1,19 @@
 package com.frontmatic.scrobbleview.ui.screens.charts
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerDefaults
+import androidx.compose.foundation.pager.PagerScope
+//import androidx.compose.foundation.pager.PagerScope
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.frontmatic.scrobbleview.data.api.RequestPeriod
 import com.frontmatic.scrobbleview.ui.components.TabRow
@@ -23,6 +30,7 @@ import com.frontmatic.scrobbleview.ui.components.TabTitle
 import com.frontmatic.scrobbleview.ui.screens.charts.tabs.RecentTab
 import com.frontmatic.scrobbleview.ui.screens.charts.tabs.TopTrackTab
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 val tabs = listOf(
@@ -41,9 +49,15 @@ val tabs = listOf(
 )
 @Composable
 fun ChartsScreen(
+    navigator: DestinationsNavigator,
     chartViewModel: ChartViewModel = hiltViewModel()
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        tabs.size
+    }
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
     val currentPage = pagerState.currentPage
@@ -83,42 +97,83 @@ fun ChartsScreen(
                 }
             }
         }
-        TabContent(pagerState = pagerState, viewModel = chartViewModel)
+        TabContent(
+            pagerState = pagerState,
+            navigator = navigator,
+            viewModel = chartViewModel,
+        )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TabContent(pagerState: PagerState, viewModel: ChartViewModel) {
-    HorizontalPager(pageCount = tabs.size, state = pagerState) { page ->
-        Column {
-            when (page) {
-                0 -> RecentTab()
-                1 -> TopTrackTab(
-                    tracks = viewModel.sevenDaysTopTracks,
-                    isRefreshing = viewModel.isSevenDayTabRefreshing.value
-                )
-                2 -> TopTrackTab(
-                    tracks = viewModel.oneMonthTopTracks,
-                    isRefreshing = viewModel.isOneMonthTabRefreshing.value
-                )
-                3 -> TopTrackTab(
-                    tracks = viewModel.threeMonthsTopTracks,
-                    isRefreshing = viewModel.isThreeMonthTabRefreshing.value
-                )
-                4 -> TopTrackTab(
-                    tracks = viewModel.sixMonthsTopTracks,
-                    isRefreshing = viewModel.isSixMonthTabRefreshing.value
-                )
-                5 -> TopTrackTab(
-                    tracks = viewModel.twelveMonthsTopTracks,
-                    isRefreshing = viewModel.isTwelveMonthTabRefreshing.value
-                )
-                6 -> TopTrackTab(
-                    tracks = viewModel.overallTopTracks,
-                    isRefreshing = viewModel.isOverallTabRefreshing.value
-                )
+fun TabContent(
+    pagerState: PagerState,
+    navigator: DestinationsNavigator,
+    viewModel: ChartViewModel
+) {
+    HorizontalPager(
+        modifier = Modifier,
+        state = pagerState,
+        pageSpacing = 0.dp,
+        userScrollEnabled = true,
+        reverseLayout = false,
+        contentPadding = PaddingValues(0.dp),
+        beyondBoundsPageCount = 0,
+        pageSize = PageSize.Fill,
+        key = null,
+        pageNestedScrollConnection = PagerDefaults.pageNestedScrollConnection(
+            Orientation.Horizontal
+        ),
+    ) {
+            Column {
+                when (it) {
+                    0 -> RecentTab(navigator = navigator)
+                    else -> {
+                        val (tracks, isRefreshing) = when (it) {
+                            1 -> Pair(
+                                viewModel.sevenDaysTopTracks,
+                                viewModel.isSevenDayTabRefreshing.value
+                            )
+
+                            2 -> Pair(
+                                viewModel.oneMonthTopTracks,
+                                viewModel.isOneMonthTabRefreshing.value
+                            )
+
+                            3 -> Pair(
+                                viewModel.threeMonthsTopTracks,
+                                viewModel.isThreeMonthTabRefreshing.value
+                            )
+
+                            4 -> Pair(
+                                viewModel.sixMonthsTopTracks,
+                                viewModel.isSixMonthTabRefreshing.value
+                            )
+
+                            5 -> Pair(
+                                viewModel.twelveMonthsTopTracks,
+                                viewModel.isTwelveMonthTabRefreshing.value
+                            )
+
+                            6 -> Pair(
+                                viewModel.overallTopTracks,
+                                viewModel.isOverallTabRefreshing.value
+                            )
+
+                            else -> Pair(
+                                viewModel.sevenDaysTopTracks,
+                                viewModel.isSevenDayTabRefreshing.value
+                            )
+                        }
+                        TopTrackTab(
+                            tracks = tracks,
+                            navigator = navigator,
+                            isRefreshing = isRefreshing
+                        )
+                    }
+                }
             }
         }
-    }
+
 }

@@ -1,10 +1,10 @@
 package com.frontmatic.scrobbleview.data.repository
 
-import androidx.paging.PagingData
 import com.frontmatic.scrobbleview.data.api.RequestPeriod
-import com.frontmatic.scrobbleview.data.model.TopTrack
 import com.frontmatic.scrobbleview.data.model.User
-import kotlinx.coroutines.flow.Flow
+import com.frontmatic.scrobbleview.data.source.DataStoreOperations
+import com.frontmatic.scrobbleview.data.source.LocalDataSource
+import com.frontmatic.scrobbleview.data.source.RemoteDataSource
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -19,6 +19,7 @@ class Repository @Inject constructor(
     fun getAllRecentTracks() = remote.getAllRecentTracks()
 
     fun getAllTopTracks(period: RequestPeriod) = remote.getAllTopTracks(period)
+
 
     suspend fun deleteAllTopTracks() = localDataSource.deleteAllTopTracks()
 
@@ -41,4 +42,5 @@ class Repository @Inject constructor(
     fun getUserChanged() = dataStore.getUserChanged()
 
     fun getUsername() = dataStore.getUsername()
+
 }

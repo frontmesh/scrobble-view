@@ -1,9 +1,11 @@
 package com.frontmatic.scrobbleview.data.api
 
+import com.frontmatic.scrobbleview.data.model.TrackInfo
 import com.frontmatic.scrobbleview.data.model.response.FriendApiResponse
 import com.frontmatic.scrobbleview.data.model.UserApiResponse
 import com.frontmatic.scrobbleview.data.model.response.RecentTracksApiResponse
 import com.frontmatic.scrobbleview.data.model.response.TopTracksApiResponse
+import com.frontmatic.scrobbleview.data.model.response.TrackInfoResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -59,4 +61,14 @@ interface LastFMApi {
         @Query("page") page: Int?,
         @Query("period") period : RequestPeriod?
     ): TopTracksApiResponse
+
+
+    @GET(".")
+    suspend fun getTrackInfo(
+        @Query("method") method: String = "track.getInfo",
+        @Query("mbid") mbid: String?,
+        @Query("username") user: String?,
+        @Query("artist") artist: String?,
+        @Query("track") track: String?,
+    ): TrackInfoResponse
 }

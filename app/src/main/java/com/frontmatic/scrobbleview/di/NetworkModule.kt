@@ -4,9 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import com.frontmatic.scrobbleview.BuildConfig
 import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.api.LastFMApi
-import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
-import com.frontmatic.scrobbleview.data.repository.RemoteDataSource
-import com.frontmatic.scrobbleview.data.repository.impl.RemoteDataSourceImpl
+import com.frontmatic.scrobbleview.data.source.DataStoreOperations
+import com.frontmatic.scrobbleview.data.source.RemoteDataSource
+import com.frontmatic.scrobbleview.data.source.impl.RemoteDataSourceImpl
 import com.frontmatic.scrobbleview.util.Constants.BASE_URL
 import com.google.gson.GsonBuilder
 import dagger.Module

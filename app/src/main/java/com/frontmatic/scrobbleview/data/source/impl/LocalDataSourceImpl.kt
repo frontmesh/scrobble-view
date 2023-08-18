@@ -1,8 +1,8 @@
-package com.frontmatic.scrobbleview.data.repository.impl
+package com.frontmatic.scrobbleview.data.source.impl
 
 import com.frontmatic.scrobbleview.data.ScrobbleDatabase
 import com.frontmatic.scrobbleview.data.model.User
-import com.frontmatic.scrobbleview.data.repository.LocalDataSource
+import com.frontmatic.scrobbleview.data.source.LocalDataSource
 
 class LocalDataSourceImpl(database: ScrobbleDatabase): LocalDataSource {
     private val userDao = database.userDao()

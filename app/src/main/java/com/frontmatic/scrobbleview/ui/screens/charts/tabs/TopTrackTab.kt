@@ -22,6 +22,7 @@ import com.frontmatic.scrobbleview.data.model.TopTrack
 import com.frontmatic.scrobbleview.ui.components.ListItem
 import com.frontmatic.scrobbleview.ui.theme.PAGE_PADDING
 import com.frontmatic.scrobbleview.util.handlePagingResult
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.Flow
 fun TopTrackTab(
     tracks: Flow<PagingData<TopTrack>>,
     isRefreshing: Boolean,
+    navigator: DestinationsNavigator,
 ) {
 
     val topTracks = tracks.collectAsLazyPagingItems()

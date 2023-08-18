@@ -1,4 +1,4 @@
-package com.frontmatic.scrobbleview.data.repository.impl
+package com.frontmatic.scrobbleview.data.source.impl
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -8,7 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
+import com.frontmatic.scrobbleview.data.source.DataStoreOperations
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

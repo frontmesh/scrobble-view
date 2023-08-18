@@ -1,4 +1,4 @@
-package com.frontmatic.scrobbleview.data.repository.impl
+package com.frontmatic.scrobbleview.data.source.impl
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
@@ -10,11 +10,12 @@ import com.frontmatic.scrobbleview.data.api.RequestPeriod
 import com.frontmatic.scrobbleview.data.model.Friend
 import com.frontmatic.scrobbleview.data.model.RecentTrack
 import com.frontmatic.scrobbleview.data.model.TopTrack
+import com.frontmatic.scrobbleview.data.model.response.TrackInfoResponse
 import com.frontmatic.scrobbleview.data.paging.FriendsRemoteMediator
 import com.frontmatic.scrobbleview.data.paging.RecentTracksRemoteMediator
 import com.frontmatic.scrobbleview.data.paging.TopTracksRemoteMediator
-import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
-import com.frontmatic.scrobbleview.data.repository.RemoteDataSource
+import com.frontmatic.scrobbleview.data.source.DataStoreOperations
+import com.frontmatic.scrobbleview.data.source.RemoteDataSource
 import kotlinx.coroutines.flow.Flow
 
 
@@ -51,5 +52,4 @@ class RemoteDataSourceImpl(
             pagingSourceFactory = { topTrackDao.getAllByPeriod(period = period) }
         ).flow
     }
-
 }

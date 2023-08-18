@@ -10,7 +10,7 @@ import com.frontmatic.scrobbleview.data.api.LastFMApi
 import com.frontmatic.scrobbleview.data.api.RequestPeriod
 import com.frontmatic.scrobbleview.data.model.TopTrack
 import com.frontmatic.scrobbleview.data.model.TopTracksRemoteKeys
-import com.frontmatic.scrobbleview.data.repository.DataStoreOperations
+import com.frontmatic.scrobbleview.data.source.DataStoreOperations
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

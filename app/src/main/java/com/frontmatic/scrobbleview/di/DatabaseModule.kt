@@ -3,8 +3,8 @@ package com.frontmatic.scrobbleview.di
 import android.content.Context
 import androidx.room.Room
 import com.frontmatic.scrobbleview.data.ScrobbleDatabase
-import com.frontmatic.scrobbleview.data.repository.LocalDataSource
-import com.frontmatic.scrobbleview.data.repository.impl.LocalDataSourceImpl
+import com.frontmatic.scrobbleview.data.source.LocalDataSource
+import com.frontmatic.scrobbleview.data.source.impl.LocalDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
